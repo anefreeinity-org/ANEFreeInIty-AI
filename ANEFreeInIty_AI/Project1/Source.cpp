@@ -1,7 +1,8 @@
 #include <iostream>
+#include "Vector2D.h"
 
 int main()
 {
-	std::cout << "Hello World" << std::endl;
-	return 0;
+	Vector2D* v = new Vector2D(3, 4);
+	v->PrintVector();
 }
