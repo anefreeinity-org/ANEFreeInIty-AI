@@ -13,18 +13,24 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Header Files\Vector">
+      <UniqueIdentifier>{3a1812e9-4014-4c57-b1be-a80d9f4197a7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\VectorSource">
+      <UniqueIdentifier>{3fe483fd-fa2b-43de-aebb-20eae655b8b1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Vector2D.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\VectorSource</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Vector2D.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Vector</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
