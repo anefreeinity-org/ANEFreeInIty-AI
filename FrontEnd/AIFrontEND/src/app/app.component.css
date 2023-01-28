@@ -1,0 +1,15 @@
+body {
+    margin: 0;
+    height: 100%;
+    background-color: rgb(111, 110, 110);
+}
+
+html{
+    background-color: rgb(111, 110, 110);
+}
+
+/* .container {
+    width: 1900px;
+    height: 900px;
+    background-color: rgb(111, 110, 110);
+} */

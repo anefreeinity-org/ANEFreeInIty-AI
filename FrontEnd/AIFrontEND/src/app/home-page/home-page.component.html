@@ -1,0 +1,10 @@
+<body style="background-color: rgb(111, 110, 110);">
+    <div class="canvas-body">
+        <canvas (mousemove)="showCoords($event)" id="canvas" class="my-canvas" #myCanvas width="1199" height="674"></canvas>
+    </div>
+    
+    <div id="nameplate">
+        <h2>CANVAS</h2>
+        <p>Coordinates: X coords: {{coordinateX}}, Y coords: {{coordinateY}}</p>
+    </div>
+</body>
