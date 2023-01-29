@@ -8,3 +8,18 @@
     border:1px solid #000000; 
     overflow: hidden;
 }
+
+.canvas-div, .input-div {
+    display: inline-block;
+    margin-top: 0.5%;
+}
+
+.input-div {
+    position: absolute;
+    margin-left: 5%;
+}
+
+.button-class {
+    margin-top: 5%;
+    margin-left: 78%;
+}

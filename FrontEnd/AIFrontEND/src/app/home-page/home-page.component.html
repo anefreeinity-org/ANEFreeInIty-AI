@@ -1,10 +1,29 @@
-<body style="background-color: rgb(111, 110, 110);">
-    <div class="canvas-body">
-        <canvas (mousemove)="showCoords($event)" id="canvas" class="my-canvas" #myCanvas width="1199" height="674"></canvas>
+<body>
+    <div class="canvas-div">
+        <div class="canvas-body">
+            <canvas (mousemove)="showCoords($event)" id="canvas" class="my-canvas" #myCanvas width="1199" height="674"></canvas>
+        </div>
+        
+        <div id="nameplate">
+            <h2>CANVAS</h2>
+            <p>Coordinates: X coords: {{coordinateX}}, Y coords: {{coordinateY}}</p>
+        </div>
     </div>
-    
-    <div id="nameplate">
-        <h2>CANVAS</h2>
-        <p>Coordinates: X coords: {{coordinateX}}, Y coords: {{coordinateY}}</p>
+    <div class="input-div">
+        <div>
+            <label for="">Vector: </label>
+        </div>
+        <input id="vector-data" type="text">
+        <div class="button-class">
+            <button type="submit" (click)="getVector()">Add</button>
+        </div> 
+        
+        <div>
+            <label for="">Starting Quadinate: </label>
+        </div>
+        <input id="starting-quad-data" type="text">
+        <div class="button-class">
+            <button type="submit" (click)="getStartingQuadinates()">Add</button>
+        </div>
     </div>
 </body>

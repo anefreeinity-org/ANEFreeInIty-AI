@@ -58,6 +58,27 @@ extern "C" _declspec(dllexport) double Vector2DGetX(Vector2D* vector)
 	return param1;
 }
 
+extern "C" _declspec(dllexport) double Vector2DGetY(Vector2D * vector)
+{
+	std::tuple<double, double> retVal = vector->GetVector2D();
+	int param2 = std::get<1>(retVal);
+	return param2;
+}
+
+extern "C" _declspec(dllexport) double Vector2DGetMagnitude(Vector2D * vector)
+{
+	std::tuple<double, double> retVal = vector->GetVectorP2D();
+	int param1 = std::get<0>(retVal);
+	return param1;
+}
+
+extern "C" _declspec(dllexport) double Vector2DGetAngleWithXAxisDeg(Vector2D * vector)
+{
+	std::tuple<double, double> retVal = vector->GetVectorP2D();
+	int param2 = std::get<1>(retVal);
+	return param2;
+}
+
 //extern "C" _declspec(dllexport) void* Vector2DGet(Vector2D * vector)
 //{
 //	(void*)vector->GetVector2D();
