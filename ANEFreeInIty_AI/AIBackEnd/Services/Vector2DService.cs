@@ -1,4 +1,5 @@
-﻿using AIBackEnd.Data.Entity;
+﻿using AIBackEnd.CPPDLLImport;
+using AIBackEnd.Data.Entity;
 using AIBackEnd.DTO;
 using AIBackEnd.Logger;
 using AIBackEnd.Repositories.Contracts;
@@ -6,9 +7,7 @@ using AIBackEnd.Services.Contracts;
 using AutoMapper;
 using AutoMapper.Features;
 using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
-using System.Runtime.InteropServices;
 using System.Text;
-using CharSet = System.Runtime.InteropServices.CharSet;
 
 namespace AIBackEnd.Services
 {
@@ -35,38 +34,20 @@ namespace AIBackEnd.Services
             double magnitude, angleWithXAxisDeg;
             StringBuilder sbDescription = new StringBuilder();
 
-            [DllImport("LinearALGEBRA.dll")]
-            static extern IntPtr CreateVector2D(double param1, double param2, bool isCartesian);
-
-            [DllImport("LinearALGEBRA.dll")]
-            static extern double Vector2DGetX(IntPtr v);
-
-            [DllImport("LinearALGEBRA.dll")]
-            static extern double Vector2DGetY(IntPtr v);
-
-            [DllImport("LinearALGEBRA.dll")]
-            static extern double Vector2DGetMagnitude(IntPtr v);
-
-            [DllImport("LinearALGEBRA.dll")]
-            static extern double Vector2DGetAngleWithXAxisDeg(IntPtr v);
-
-            [DllImport("LinearALGEBRA.dll", CharSet = CharSet.Ansi)]
-            static extern void aCat(string s1, string s2, StringBuilder ret);
-
-
             if (vector.IsCartesian)
             {
-                test = CreateVector2D(vector.X, vector.Y, true);
+                test = ImportedDLL.CreateVector2D(vector.X, vector.Y, true);
             }
             else
             {
-                test = CreateVector2D(vector.Magnitude, vector.AngleWithXAxisDeg, false);
+                test = ImportedDLL.CreateVector2D(vector.Magnitude, vector.AngleWithXAxisDeg, false);
             }
-            xQuad = Vector2DGetX(test);
-            yQuad = Vector2DGetY(test);
-            magnitude = Vector2DGetMagnitude(test);
-            angleWithXAxisDeg = Vector2DGetAngleWithXAxisDeg(test);
-            aCat("Description: ", vector.Description, sbDescription);
+
+            xQuad = ImportedDLL.Vector2DGetX(test);
+            yQuad = ImportedDLL.Vector2DGetY(test);
+            magnitude = ImportedDLL.Vector2DGetMagnitude(test);
+            angleWithXAxisDeg = ImportedDLL.Vector2DGetAngleWithXAxisDeg(test);
+            ImportedDLL.aCat("Description: ", vector.Description, sbDescription);
 
             Vector2D vectorNew = new Vector2D { 
                 X = xQuad, 
