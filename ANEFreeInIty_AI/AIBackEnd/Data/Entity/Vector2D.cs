@@ -23,6 +23,10 @@ namespace AIBackEnd.Data.Entity
         [Column("angle_with_x_axis_deg")]
         public double AngleWithXAxisDeg { get; set; }
 
+        [Required(ErrorMessage = "Description is required")]
+        [Column("v_description")]
+        public string Description { get; set; }
+
         [Required(ErrorMessage = "Is Cartesian is required")]
         [Column("is_cartesian")]
         public bool IsCartesian { get; set; }

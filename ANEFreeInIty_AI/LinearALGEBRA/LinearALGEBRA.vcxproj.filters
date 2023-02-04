@@ -30,6 +30,9 @@
     <ClInclude Include="Vector2D.h">
       <Filter>Header Files\Vector</Filter>
     </ClInclude>
+    <ClInclude Include="Vector2DExport.h">
+      <Filter>Header Files\Vector</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -39,6 +42,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Vector2D.cpp">
+      <Filter>Source Files\VectorSource</Filter>
+    </ClCompile>
+    <ClCompile Include="Vector2DExport.cpp">
       <Filter>Source Files\VectorSource</Filter>
     </ClCompile>
   </ItemGroup>

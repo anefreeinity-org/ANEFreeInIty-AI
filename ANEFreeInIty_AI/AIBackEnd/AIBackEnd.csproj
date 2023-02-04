@@ -16,6 +16,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\LinearALGEBRA\LinearALGEBRA.vcxproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Reference Include="LinearALGEBRA">
       <HintPath>..\x64\Debug\LinearALGEBRA.dll</HintPath>
     </Reference>

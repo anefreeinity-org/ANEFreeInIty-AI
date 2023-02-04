@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using System.Text;
 
 namespace AIBackEnd.DTO
 {
@@ -16,5 +17,7 @@ namespace AIBackEnd.DTO
         virtual public double AngleWithXAxisDeg { get; set; }
 
         virtual public bool IsCartesian { get; set; }
+
+        public string Description { get; set; }
     }
 }
