@@ -70,9 +70,12 @@ namespace AIBackEnd.Services
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<Vector2D>> GetVector2DAsync()
+        public async Task<IEnumerable<Vector2DDTO>> GetVector2DAsync()
         {
-            throw new NotImplementedException();
+            var leads = await _anefreeinityAIRepositoryManager.Vector2D.GetAllVector2D();
+            _loggerManager.LogInfo($"returned all VEctor2D details from datbse.");
+            var vectorRes = _mapper.Map<IEnumerable<Vector2DDTO>>(leads);
+            return vectorRes;
         }
 
         public Task<Vector2D> GetVector2DByIdAsync(int id)

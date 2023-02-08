@@ -1,0 +1,1 @@
+export const BASE_ADDRESS = "https://localhost:7064";

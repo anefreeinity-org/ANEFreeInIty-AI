@@ -1,5 +1,8 @@
+import { Vector2D } from './../Model/Vector2D';
 import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, Inject } from '@angular/core';
 import { DOCUMENT } from '@angular/common'; 
+import { Vector2DService } from '../vector2-d.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-home-page',
@@ -27,7 +30,13 @@ export class HomePageComponent implements OnInit{
   myCanvas: any;
   context: any;
 
-  constructor(@Inject(DOCUMENT) document: Document) { }
+  Vector2DObs : Observable<Vector2D[]>;
+  Vector2DList : Vector2D[];
+
+  constructor(
+    @Inject(DOCUMENT) document: Document,
+    private vector2D: Vector2DService
+    ) { }
 
   ngOnInit(): void {
     this.myCanvas = document.getElementById("canvas");
@@ -36,7 +45,32 @@ export class HomePageComponent implements OnInit{
     this.context = this.myCanvas.getContext("2d");
 
     this.drawAxis();
+    this.getVector2D();
     //this.func();
+  }
+
+  getVector2D() : void {
+    this.Vector2DObs = this.vector2D.getAllVector2DFromServer();
+    this.Vector2DObs.subscribe(
+      res=>{
+        this.Vector2DList = res;
+        //window.alert(JSON.stringify(this.Vector2DList));
+        this.drawVector2D();
+      },
+      err=>{
+        window.alert("error cannot get vector2D: " + err);
+      }
+    );
+  }
+
+  drawVector2D() : void {
+    //window.alert("hi");
+    
+    for(let v of this.Vector2DList){
+      this.vectorX = Number(v.x);
+      this.vectorY = Number(v.y);
+      this.drawVector();
+    }
   }
 
   drawAxis(){
@@ -129,6 +163,8 @@ getStartingQuadinates(): void {
   let quadinates: string[] = value.split(',');
   this.startingQuadinateX = Number(quadinates[0]);
   this.startingQuadinateY = Number(quadinates[1]);
+
+  this.getVector2D();
   //window.alert(this.startingQuadinateX+", "+this.startingQuadinateY);
 }
 }

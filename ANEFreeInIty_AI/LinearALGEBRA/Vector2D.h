@@ -27,6 +27,8 @@ public:
 
 	static std::tuple<double, double> IntersectLineByVectors(Vector2D* vector1, Vector2D* vector2, double t);
 
+	static Vector2D* LinearCombinationVector(Vector2D* vects[], double constants[], int length);
+
 	Vector2D* operator + (Vector2D& vector);
 
 	Vector2D* operator - (Vector2D& vector);

@@ -24,12 +24,12 @@
     <ClCompile Include="Source.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\LinearALGEBRA\Vector2D.cpp">
+    <ClCompile Include="VectorV2D.cpp">
       <Filter>Source Files\Vector</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\LinearALGEBRA\Vector2D.h">
+    <ClInclude Include="VectorV2D.h">
       <Filter>Header Files\Vector</Filter>
     </ClInclude>
   </ItemGroup>

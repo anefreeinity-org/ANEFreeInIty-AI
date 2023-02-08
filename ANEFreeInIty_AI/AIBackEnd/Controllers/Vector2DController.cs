@@ -15,6 +15,13 @@ namespace AIBackEnd.Controllers
             _serviceManager = serviceManager;
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetVector2D()
+        {
+            var vectors = await _serviceManager.vector2DService.GetVector2DAsync();
+            return Ok(vectors);
+        }
+
         [HttpPost]
         public async Task<IActionResult> CreateVector2D([FromBody] Vector2DDTO vector)
         {

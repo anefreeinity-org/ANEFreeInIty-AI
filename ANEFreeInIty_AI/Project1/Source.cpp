@@ -1,5 +1,5 @@
 #include <iostream>
-#include "Vector2D.h"
+#include "VectorV2D.h"
 
 int main()
 {
@@ -61,11 +61,38 @@ int main()
 	v->PrintVector();
 	v->PrintVectorP();*/
 
-	Vector2D* v1 = new Vector2D(2, 1);
+	//Vector2D* v1 = new Vector2D(2, 1);
+	//v1->PrintVector();
+
+	//Vector2D* v2 = new Vector2D(0, 3);
+	//v2->PrintVector();
+
+	//Vector2D* v3 = new Vector2D(1, 1);
+	//v3->PrintVector();
+
+	//Vector2D* v4 = new Vector2D(5, 0);
+	//v4->PrintVector();
+
+	//Vector2D* arr[] = { v1, v2, v3, v4 };
+
+	//double cons[] = { 2,3,5,9 };
+
+	////Vector2D::IntersectLineByVectors(v1, v, 5);
+	//Vector2D::LinearCombinationVector(arr, cons, 4)->PrintVector();
+
+	Vector2D* v1 = new Vector2D(1, 2);
 	v1->PrintVector();
 
-	Vector2D* v = new Vector2D(0, 3);
-	v->PrintVector();
+	Vector2D* v2 = new Vector2D(0, 3);
+	v2->PrintVector();
 
-	Vector2D::IntersectLineByVectors(v1, v, 5);
+	Vector2D* v3 = new Vector2D(2, 2);
+	v3->PrintVector();
+
+	std::tuple<double, double> constants = Vector2D::GetConstantsToReachThirdVector(v1, v2, v3);
+
+	double c1 = std::get<0>(constants);
+	double c2 = std::get<1>(constants);
+	
+	std::cout << c1 << ", " << c2 << std::endl;
 }

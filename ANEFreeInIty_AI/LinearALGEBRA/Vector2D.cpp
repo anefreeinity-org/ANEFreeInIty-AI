@@ -30,6 +30,20 @@ Vector2D::Vector2D(double param1, double param2, bool isCartesian)
 	}
 }
 
+Vector2D* Vector2D::LinearCombinationVector(Vector2D* vects[], double constants[], int length)
+{
+	Vector2D *vect, *vectT;
+	vect = Vector2D::ScalerMultiplication(constants[0], *vects[0]);
+
+	for (int i = 1;i < length;i++)
+	{
+		vectT = Vector2D::ScalerMultiplication(constants[i], *vects[i]);
+		vect = *vect + *vectT;
+	}
+
+	return vect;
+}
+
 Vector2D* Vector2D::ScalerMultiplication(double sValue, Vector2D& vector)
 {
 	std::tuple<double, double> vectorQ = vector.GetVector2D();
