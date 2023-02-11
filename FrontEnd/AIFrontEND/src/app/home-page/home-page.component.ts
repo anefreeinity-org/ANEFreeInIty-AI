@@ -3,6 +3,11 @@ import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, Inject } from 
 import { DOCUMENT } from '@angular/common'; 
 import { Vector2DService } from '../vector2-d.service';
 import { Observable } from 'rxjs';
+import { iteams } from '../Model/Iteams';
+import { IteamContainer } from '../Model/IteamContainer';
+import { Router } from '@angular/router';
+import { frames } from '../Model/referenceFrame';
+
 
 @Component({
   selector: 'app-home-page',
@@ -33,9 +38,18 @@ export class HomePageComponent implements OnInit{
   Vector2DObs : Observable<Vector2D[]>;
   Vector2DList : Vector2D[];
 
+  iteamMenue: string[] = iteams;
+  iteamSelectedMenue: string = "Vector2D";
+  iteamContain: IteamContainer[] = [];
+  ishoveringOnIteam: boolean = false;
+
+  referenceFrameList: string[] = frames;
+  selectedFrame: string = this.referenceFrameList[0];
+
   constructor(
     @Inject(DOCUMENT) document: Document,
-    private vector2D: Vector2DService
+    private vector2D: Vector2DService,
+    private router: Router,
     ) { }
 
   ngOnInit(): void {
@@ -56,6 +70,7 @@ export class HomePageComponent implements OnInit{
         this.Vector2DList = res;
         //window.alert(JSON.stringify(this.Vector2DList));
         this.drawVector2D();
+        this.vector2DMethod();
       },
       err=>{
         window.alert("error cannot get vector2D: " + err);
@@ -66,10 +81,18 @@ export class HomePageComponent implements OnInit{
   drawVector2D() : void {
     //window.alert("hi");
     
-    for(let v of this.Vector2DList){
-      this.vectorX = Number(v.x);
-      this.vectorY = Number(v.y);
-      this.drawVector();
+    // for(let v of this.Vector2DList){
+    //   this.vectorX = Number(v.x);
+    //   this.vectorY = Number(v.y);
+    //   this.drawVector();
+    // }
+
+    for(let v of this.iteamContain){
+      if(v.isAdded){
+        this.vectorX = Number(v.ref.x);
+        this.vectorY = Number(v.ref.y);
+        this.drawVector();
+      }
     }
   }
 
@@ -107,6 +130,62 @@ export class HomePageComponent implements OnInit{
     this.context.stroke();
 }
 
+displayIteamValues(): void {
+  //window.alert(this.iteamSelectedMenue);
+  switch(this.iteamSelectedMenue){
+    case "Vector2D" : this.vector2DMethod();
+                      break;
+    
+    case "Vector3D" : window.alert("Vector3D is under development");
+                      break;
+
+    case "Matrix" : window.alert("Matrix is under development");
+                      break;
+
+    default: window.alert("something went wrong");
+  }
+}
+
+frameChange(): void {
+  //window.alert(this.selectedFrame);
+  if(this.selectedFrame === "Cartesian Frame"){
+    
+  } else {
+    window.alert("under development");
+  }
+}
+
+vector2DMethod(): void {
+  //this.test();
+  let pushIteamMember: IteamContainer;
+  
+  for(let v of this.Vector2DList){
+    pushIteamMember = new IteamContainer();
+    pushIteamMember.id = Number(v.id);
+    pushIteamMember.name = v.description;
+    pushIteamMember.ref = v;
+
+    this.iteamContain.push(pushIteamMember);
+  }
+}
+
+selectedIteam(iteam: IteamContainer, event: any): void {
+  event.preventDefault();
+  const vector: Vector2D = iteam.ref;
+  if(!iteam.isAdded){
+    iteam.isAdded = true;
+    this.vectorX = Number(vector.x);
+    this.vectorY = Number(vector.y);
+    this.drawVector();
+  } else {
+    iteam.isAdded = false;
+    this.clearCanvas();
+    this.drawAxis();
+    this.drawVector2D();
+  }
+  
+}
+
 func(){
     this.context.beginPath();
     this.context.moveTo(20, 20);
@@ -123,13 +202,47 @@ showCoords(event: any) {
     this.coordinateY = (y - 338)*-1;
 }
 
-getVector(): void {
+addVector(): void {
   let value = (<HTMLInputElement>document.getElementById("vector-data")).value;
   let quadinates: string[] = value.split(',');
   this.vectorX = Number(quadinates[0]);
   this.vectorY = Number(quadinates[1]);
+
+  let newVector: Vector2D = new Vector2D();
+  newVector.x = this.vectorX;
+  newVector.y = this.vectorY;
+
+  this.vector2D.postVector2D(newVector).subscribe(
+    res=>{
+      window.alert("vector 2d added");
+      //this.getVector2D();
+    },
+    err=>{
+      window.alert("vector2d cannot be added: "+err);
+    }
+  );
+
   //window.alert(this.vectorX+", "+this.vectorY);
   this.drawVector();
+}
+
+deleteThisVector(vector: IteamContainer): void {
+  this.vector2D.deleteVector2D(vector.ref.id).subscribe(
+    res=>{
+      window.alert("unable to delete: "+res);
+    },
+    err=>{
+      window.alert("sucessfully deleted iteam: "+err.id);
+      //const indx = this.iteamContain.indexOf(vector);
+      //window.alert(indx);
+
+    }
+  );
+}
+
+hoverOnIteam(onHovering: boolean, iteam: IteamContainer): void {
+  iteam.isHovering = onHovering;
+  //window.alert(this.ishoveringOnIteam);
 }
 
 drawVector(): void {
@@ -144,6 +257,10 @@ drawVector(): void {
   this.context.lineTo(epX,epY);
   this.drawArrow(spX, spY, epX, epY);
   this.context.stroke();
+}
+
+clearCanvas(): void {
+  this.context.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
 }
 
 drawArrow(fromx: number, fromy: number, tox: number, toy: number): void {
@@ -166,5 +283,13 @@ getStartingQuadinates(): void {
 
   this.getVector2D();
   //window.alert(this.startingQuadinateX+", "+this.startingQuadinateY);
+}
+
+test(): void {
+  window.alert("ok");
+}
+
+tracked(item: any, index: any){
+  return index;
 }
 }

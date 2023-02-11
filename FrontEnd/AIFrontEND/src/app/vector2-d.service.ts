@@ -9,7 +9,7 @@ import { BASE_ADDRESS } from './Environment/base';
 })
 export class Vector2DService {
 
-  getLink = "";
+  link = "";
 
   Vector2DObs : Observable<Vector2D>;
   Vector2DList : Vector2D[];
@@ -21,7 +21,22 @@ export class Vector2DService {
   }
 
   getAllVector2DFromServer(): Observable<Vector2D[]>  {
-    this.getLink = BASE_ADDRESS + "/api/Vector2D";
-    return this.http.get<Vector2D[]>(this.getLink);
+    this.link = BASE_ADDRESS + "/api/Vector2D";
+    return this.http.get<Vector2D[]>(this.link);
+  }
+
+  postVector2D(vector: Vector2D): Observable<Vector2D> {
+    const headers = new HttpHeaders().set('content-type', 'application/json'); 
+    const body=JSON.stringify(vector);
+    //console.log(body);
+    window.alert(body);
+    return this.http.post<Vector2D>(BASE_ADDRESS + '/api/Vector2D', vector,{headers});
+  }
+
+  deleteVector2D(deleteId: number): Observable<Vector2D> {
+    //window.alert(deleteId);
+    this.link = BASE_ADDRESS + "/api/Vector2D/vector2DId?vector2DId=" + deleteId;
+    //window.alert(this.link);
+    return this.http.delete<Vector2D>(this.link);
   }
 }

@@ -65,9 +65,11 @@ namespace AIBackEnd.Services
             return createdVectorRef;
         }
 
-        public Task DeleteVector2DAsync(Vector2D vector)
+        public async Task DeleteVector2DAsync(Vector2DDTO vector)
         {
-            throw new NotImplementedException();
+            var vectorEntity = _mapper.Map<Vector2D>(vector);
+            _anefreeinityAIRepositoryManager.Vector2D.Delete(vectorEntity);
+            await _anefreeinityAIRepositoryManager.Save();
         }
 
         public async Task<IEnumerable<Vector2DDTO>> GetVector2DAsync()
@@ -78,14 +80,34 @@ namespace AIBackEnd.Services
             return vectorRes;
         }
 
-        public Task<Vector2D> GetVector2DByIdAsync(int id)
+        public async Task<Vector2DDTO> GetVector2DByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            var details = await _anefreeinityAIRepositoryManager.Vector2D.GetVector2DByID(id);
+            if (details == null)
+            {
+                throw new Exception($"vector2d with Id:{id},has not be found in db.");
+            }
+            var vectorinfo = _mapper.Map<Vector2DDTO>(details);
+            _loggerManager.LogInfo($"returned all vectors information from database.");
+            return vectorinfo;
         }
 
-        public Task UpdateVector2DAsync(int id, Vector2D vector)
+        public async Task UpdateVector2DAsync(int id, Vector2DDTO vector)
         {
-            throw new NotImplementedException();
+            var vector2DEntity = await _anefreeinityAIRepositoryManager.Vector2D.GetVector2DByID(id);
+            if (vector2DEntity == null)
+            {
+                throw new Exception($"vector2d with Id:{id},has not be found in db.");
+            }
+            var vector2DEntityUpdated = _mapper.Map<Vector2D>(vector);
+
+            vector2DEntityUpdated.Id = vector2DEntity.Id;
+
+            _anefreeinityAIRepositoryManager.Vector2D.Update(vector2DEntityUpdated);
+            _loggerManager.LogInfo($"updated vector2d{id}in databse");
+
+            await _anefreeinityAIRepositoryManager.Save();
+            _loggerManager.LogInfo($"committed all vector2ds.");
         }
     }
 }

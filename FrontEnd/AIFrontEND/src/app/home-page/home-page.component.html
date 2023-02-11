@@ -1,3 +1,6 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
 <body>
     <div class="canvas-div">
         <div class="canvas-body">
@@ -8,22 +11,55 @@
             <h2>CANVAS</h2>
             <p>Coordinates: X coords: {{coordinateX}}, Y coords: {{coordinateY}}</p>
         </div>
+
+        <div class="vector-set-quad-start-div">
+            <input class="vector-set-quad-start-input" id="starting-quad-data" type="text" placeholder="Starting Coordinate(x,y)">
+        </div>
+        <button class="set-point-submit-button" type="submit" (click)="getStartingQuadinates()">Add</button>
     </div>
     <div class="input-div">
-        <div>
-            <label for="">Vector: </label>
+        <select class="frame-select" style="position: sticky;" name="Items" [(ngModel)] = "selectedFrame" (ngModelChange)="frameChange()">
+            <option *ngFor="let frame of referenceFrameList" [value]="frame">{{frame}}</option>
+        </select>
+        <div class="vector-add-quad-div">
+            <!-- <label for="">Vector: </label> -->
+            <input class="vector-add-quad-input" id="vector-data" type="text" placeholder="Vector2D (x,y)">
         </div>
-        <input id="vector-data" type="text">
-        <div class="button-class">
-            <button type="submit" (click)="getVector()">Add</button>
-        </div> 
+
+        <div class="vector-add-des-div">
+            <!-- <label for="">Vector: </label> -->
+            <input class="vector-add-quad-input" id="vector-data" type="text" placeholder="Vector2D Name">
+        </div>
+
+        <div class="vector-add-des-div">
+            <!-- <label for="">Vector: </label> -->
+            <textarea class="vector-add-des-input" id="vector-data" type="text" placeholder="Vector2D Description"></textarea>
+        </div>
+        <button class="add-submit-button" type="submit" (click)="addVector()">Submit</button>
         
-        <div>
-            <label for="">Starting Quadinate: </label>
-        </div>
-        <input id="starting-quad-data" type="text">
-        <div class="button-class">
-            <button type="submit" (click)="getStartingQuadinates()">Add</button>
+    </div>
+
+    <div class="element-div">
+        <select class="iteam-select" style="position: sticky;" name="Items" [(ngModel)] = "iteamSelectedMenue" id="cars" (ngModelChange)="displayIteamValues()">
+            <option class="iteam-option" *ngFor="let item of iteamMenue" [value]="item">{{item}}</option>
+        </select>
+        <div class="element-box">
+            <div class="iteam-menue-div">
+                <div *ngFor="let i of iteamContain; let indx = index; trackBy: tracked" style="cursor: pointer;" class="iteam-menue-list" (mouseover) = "hoverOnIteam(true, i)" (mouseout) = "hoverOnIteam(false, i)" [style.background-color]="i.isHovering ? 'rgba(143, 140, 140, 0.712)' : 'rgba(210, 210, 210, 0.852)'">
+                    <span style="padding-left: 5px; margin-top: 30px;">{{indx+1}}</span>
+                    <span style="padding-left: 20px;">{{i.name}}</span>
+                    <a style="float: right; cursor: pointer; width: 16px; padding-left: 10px;" (click)="deleteThisVector(i)" href="#">
+                        <i class="fa fa-trash-o" aria-hidden="true" style="color: rgb(196, 29, 29); font-size:19px;"></i>
+                    </a>
+                    <a style="float: right; cursor: pointer; width: 16px; padding-left: 10px;" href="#">
+                        <i class="fa fa-pencil-square-o" aria-hidden="true" style="color: rgb(17, 108, 126); font-size:19px;"></i>
+                    </a>
+                    <a style="float:right; cursor: pointer; width: 16px;" (click)="selectedIteam(i, $event)"  href="#">
+                        <i class="fa fa-play-circle-o" aria-hidden="true" [style.color]="i.isAdded ? 'rgb(21, 191, 66)' : 'rgb(255, 17, 17)'" style=" padding-left: 2px; padding-top: 1px; font-size:19px;"></i>
+                    </a>
+                </div>
+            </div>
+
         </div>
     </div>
 </body>

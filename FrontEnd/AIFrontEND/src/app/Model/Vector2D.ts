@@ -9,7 +9,7 @@ export class Vector2D {
 
     angleWithXAxisDeg : number | null | undefined;
 
-    isCartesian : boolean | null | undefined;
+    isCartesian : boolean | null | undefined = true;
 
     description : string | null | undefined = "";
 }
