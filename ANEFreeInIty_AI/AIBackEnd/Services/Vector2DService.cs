@@ -49,12 +49,13 @@ namespace AIBackEnd.Services
             angleWithXAxisDeg = ImportedDLL.Vector2DGetAngleWithXAxisDeg(test);
             ImportedDLL.aCat("Description: ", vector.Description, sbDescription);
 
-            Vector2D vectorNew = new Vector2D { 
-                X = xQuad, 
-                Y = yQuad, 
-                Magnitude = magnitude, 
-                AngleWithXAxisDeg = angleWithXAxisDeg, 
-                Description = sbDescription.ToString(), 
+            Vector2D vectorNew = new Vector2D {
+                X = xQuad,
+                Y = yQuad,
+                Magnitude = magnitude,
+                AngleWithXAxisDeg = angleWithXAxisDeg,
+                Description = sbDescription.ToString(),
+                Name = vector.Name,
                 IsCartesian = vector.IsCartesian };
 
             _anefreeinityAIRepositoryManager.Vector2D.Create(vectorNew);

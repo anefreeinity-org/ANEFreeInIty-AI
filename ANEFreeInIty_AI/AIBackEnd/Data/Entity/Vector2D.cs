@@ -27,6 +27,10 @@ namespace AIBackEnd.Data.Entity
         [Column("v_description")]
         public string Description { get; set; }
 
+        [Required(ErrorMessage = "Name is required")]
+        [Column("v_name")]
+        public string Name { get; set; }
+
         [Required(ErrorMessage = "Is Cartesian is required")]
         [Column("is_cartesian")]
         public bool IsCartesian { get; set; }

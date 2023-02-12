@@ -1,3 +1,5 @@
+import { ProjectIteamMapper } from './../Model/ProjectIteamMapper';
+import { Project } from './../Model/Project';
 import { Vector2D } from './../Model/Vector2D';
 import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, Inject } from '@angular/core';
 import { DOCUMENT } from '@angular/common'; 
@@ -7,7 +9,8 @@ import { iteams } from '../Model/Iteams';
 import { IteamContainer } from '../Model/IteamContainer';
 import { Router } from '@angular/router';
 import { frames } from '../Model/referenceFrame';
-
+import { FormBuilder, Validators } from '@angular/forms';
+import { ProjectService } from '../project.service';
 
 @Component({
   selector: 'app-home-page',
@@ -46,10 +49,23 @@ export class HomePageComponent implements OnInit{
   referenceFrameList: string[] = frames;
   selectedFrame: string = this.referenceFrameList[0];
 
+  formDetails = this.formBuilder.group({
+    vector2D_coord: ["", Validators.required],
+    vector2D_name: ["", Validators.required],
+    vector2D_description: ["", Validators.required],
+  });
+
+  projectList: Project[] = [];
+  selectedProjectRef: Project = new Project();
+  selectedProject: Project;
+  projectIteamContainer: IteamContainer[] = [];
+
   constructor(
     @Inject(DOCUMENT) document: Document,
     private vector2D: Vector2DService,
     private router: Router,
+    private formBuilder: FormBuilder,
+    private project: ProjectService
     ) { }
 
   ngOnInit(): void {
@@ -60,7 +76,21 @@ export class HomePageComponent implements OnInit{
 
     this.drawAxis();
     this.getVector2D();
+    this.getProjects();
     //this.func();
+  }
+
+  getProjects(): void {
+    this.project.getAllProjectsFromServer().subscribe(
+      res=>{
+        this.projectList = res;
+        //window.alert(JSON.stringify(this.projectList));
+        this.addToProjectIteamContainer(this.projectList[0]);
+      },
+      err=>{
+        window.alert("cannot get projects: "+JSON.stringify(err));
+      }
+    );
   }
 
   getVector2D() : void {
@@ -79,14 +109,6 @@ export class HomePageComponent implements OnInit{
   }
 
   drawVector2D() : void {
-    //window.alert("hi");
-    
-    // for(let v of this.Vector2DList){
-    //   this.vectorX = Number(v.x);
-    //   this.vectorY = Number(v.y);
-    //   this.drawVector();
-    // }
-
     for(let v of this.iteamContain){
       if(v.isAdded){
         this.vectorX = Number(v.ref.x);
@@ -95,6 +117,16 @@ export class HomePageComponent implements OnInit{
       }
     }
   }
+
+  // drawProject(project: Project): void {
+  //   for(let v of project.projectMapper){
+  //     if(v.iteamStatus){
+  //       this.vectorX = Number(v.ref.x);
+  //       this.vectorY = Number(v.ref.y);
+  //       this.drawVector();
+  //     }
+  //   }
+  // }
 
   drawAxis(){
     this.context.beginPath();
@@ -131,7 +163,6 @@ export class HomePageComponent implements OnInit{
 }
 
 displayIteamValues(): void {
-  //window.alert(this.iteamSelectedMenue);
   switch(this.iteamSelectedMenue){
     case "Vector2D" : this.vector2DMethod();
                       break;
@@ -146,8 +177,18 @@ displayIteamValues(): void {
   }
 }
 
+// displayAllProjects(): void {
+//   //window.alert(JSON.stringify(this.selectedProject));
+// }
+
+selectedProjectFunction(proj: Project): void {
+  this.selectedProject = proj;
+  //window.alert(this.selectedProject.name);
+  this.projectIteamContainer = [];
+  this.addToProjectIteamContainer(this.selectedProject);
+}
+
 frameChange(): void {
-  //window.alert(this.selectedFrame);
   if(this.selectedFrame === "Cartesian Frame"){
     
   } else {
@@ -156,16 +197,29 @@ frameChange(): void {
 }
 
 vector2DMethod(): void {
-  //this.test();
   let pushIteamMember: IteamContainer;
   
   for(let v of this.Vector2DList){
     pushIteamMember = new IteamContainer();
     pushIteamMember.id = Number(v.id);
-    pushIteamMember.name = v.description;
+    pushIteamMember.name = v.name;
     pushIteamMember.ref = v;
 
     this.iteamContain.push(pushIteamMember);
+  }
+}
+
+addToProjectIteamContainer(project: Project): void {
+  let pushIteamMember: IteamContainer;
+  
+  for(let v of project.projectMapper){
+    pushIteamMember = new IteamContainer();
+    pushIteamMember.id = Number(v.id);
+    pushIteamMember.name = v.vector2DName;
+    pushIteamMember.isAdded = v.iteamStatus === 1? true: false;
+    pushIteamMember.ref = v;
+
+    this.projectIteamContainer.push(pushIteamMember);
   }
 }
 
@@ -202,8 +256,20 @@ showCoords(event: any) {
     this.coordinateY = (y - 338)*-1;
 }
 
+onSubmit(): void {
+  if(this.iteamSelectedMenue === "Vector2D"){
+    this.addVector();
+  }
+}
+
 addVector(): void {
-  let value = (<HTMLInputElement>document.getElementById("vector-data")).value;
+
+  if(this.selectedFrame === "Polar Frame"){
+    window.alert("unable to add polar frame of reference is under development");
+    return;
+  }
+
+  let value = this.formDetails.get("vector2D_coord")?.value;
   let quadinates: string[] = value.split(',');
   this.vectorX = Number(quadinates[0]);
   this.vectorY = Number(quadinates[1]);
@@ -211,6 +277,8 @@ addVector(): void {
   let newVector: Vector2D = new Vector2D();
   newVector.x = this.vectorX;
   newVector.y = this.vectorY;
+  newVector.name = this.formDetails.get("vector2D_name")?.value;
+  newVector.description = this.formDetails.get("vector2D_description")?.value;
 
   this.vector2D.postVector2D(newVector).subscribe(
     res=>{
@@ -241,6 +309,11 @@ deleteThisVector(vector: IteamContainer): void {
 }
 
 hoverOnIteam(onHovering: boolean, iteam: IteamContainer): void {
+  iteam.isHovering = onHovering;
+  //window.alert(this.ishoveringOnIteam);
+}
+
+hoverOnProjectIteam(onHovering: boolean, iteam: IteamContainer): void {
   iteam.isHovering = onHovering;
   //window.alert(this.ishoveringOnIteam);
 }

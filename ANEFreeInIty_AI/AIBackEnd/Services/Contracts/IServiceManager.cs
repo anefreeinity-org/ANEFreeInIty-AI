@@ -3,5 +3,6 @@
     public interface IServiceManager
     {
         IVector2DService vector2DService { get; }
+        IProjectService projectService { get; }
     }
 }

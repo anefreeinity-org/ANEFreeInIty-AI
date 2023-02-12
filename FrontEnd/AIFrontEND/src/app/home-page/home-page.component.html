@@ -21,23 +21,50 @@
         <select class="frame-select" style="position: sticky;" name="Items" [(ngModel)] = "selectedFrame" (ngModelChange)="frameChange()">
             <option *ngFor="let frame of referenceFrameList" [value]="frame">{{frame}}</option>
         </select>
-        <div class="vector-add-quad-div">
-            <!-- <label for="">Vector: </label> -->
-            <input class="vector-add-quad-input" id="vector-data" type="text" placeholder="Vector2D (x,y)">
-        </div>
 
-        <div class="vector-add-des-div">
-            <!-- <label for="">Vector: </label> -->
-            <input class="vector-add-quad-input" id="vector-data" type="text" placeholder="Vector2D Name">
-        </div>
-
-        <div class="vector-add-des-div">
-            <!-- <label for="">Vector: </label> -->
-            <textarea class="vector-add-des-input" id="vector-data" type="text" placeholder="Vector2D Description"></textarea>
-        </div>
-        <button class="add-submit-button" type="submit" (click)="addVector()">Submit</button>
+        <form [formGroup]="formDetails" (ngSubmit)="onSubmit()">
+            <div class="vector-add-quad-div">
+                <!-- <label for="">Vector: </label> -->
+                <input formControlName="vector2D_coord" class="vector-add-quad-input" id="vector-data" type="text" placeholder="Vector2D (x,y)">
+            </div>
+    
+            <div class="vector-add-des-div">
+                <!-- <label for="">Vector: </label> -->
+                <input formControlName="vector2D_name" class="vector-add-quad-input" id="vector-data" type="text" placeholder="Vector2D Name">
+            </div>
+    
+            <div class="vector-add-des-div">
+                <!-- <label for="">Vector: </label> -->
+                <textarea formControlName="vector2D_description" class="vector-add-des-input" id="vector-data" type="text" placeholder="Vector2D Description"></textarea>
+            </div>
+            <div class="add-submit-button-div">
+                <button [disabled]="formDetails.controls['vector2D_coord'].invalid || formDetails.controls['vector2D_name'].invalid || formDetails.controls['vector2D_description'].invalid" class="add-submit-button" type="submit">Submit</button>
+            </div>
+        </form> 
         
+        <select class="project-select" style="position: sticky;" name="Items" [(ngModel)] = "selectedProjectRef" id="cars">
+            <option class="iteam-option" *ngFor="let proj of projectList" [value]="proj" (click) = "selectedProjectFunction(proj)">{{proj.name}}</option>
+        </select>
+        <div class="project-box">
+            <div class="project-menue-div">
+                <div *ngFor="let i of projectIteamContainer; let indx = index; trackBy: tracked" style="cursor: pointer;" (mouseover) = "hoverOnProjectIteam(true, i)" (mouseout) = "hoverOnProjectIteam(false, i)" [style.background-color]="i.isHovering ? 'rgba(143, 140, 140, 0.712)' : 'rgba(210, 210, 210, 0.852)'" class="iteam-menue-list">
+                    <span style="padding-left: 5px; margin-top: 30px;">{{indx+1}}</span>
+                    <span style="padding-left: 20px;">{{i.name}}</span>
+                    <a style="float: right; cursor: pointer; width: 16px; padding-left: 10px;" href="#">
+                        <i class="fa fa-trash-o" aria-hidden="true" style="color: rgb(196, 29, 29); font-size:19px;"></i>
+                    </a>
+                    <a style="float: right; cursor: pointer; width: 16px; padding-left: 10px;" href="#">
+                        <i class="fa fa-pencil-square-o" aria-hidden="true" style="color: rgb(17, 108, 126); font-size:19px;"></i>
+                    </a>
+                    <a style="float:right; cursor: pointer; width: 16px;"  href="#">
+                        <i class="fa fa-play-circle-o" aria-hidden="true" [style.color]="i.isAdded ? 'rgb(21, 191, 66)' : 'rgb(255, 17, 17)'" style=" padding-left: 2px; padding-top: 1px; font-size:19px;"></i>
+                    </a>
+                </div>
+            </div>
+
+        </div>
     </div>
+
 
     <div class="element-div">
         <select class="iteam-select" style="position: sticky;" name="Items" [(ngModel)] = "iteamSelectedMenue" id="cars" (ngModelChange)="displayIteamValues()">
@@ -61,5 +88,7 @@
             </div>
 
         </div>
+
+        
     </div>
 </body>

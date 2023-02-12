@@ -21,6 +21,8 @@ namespace AIBackEnd.Data
         //        .HasOne(e => e.UserStory)
         //        .WithOne(f => f.Feature);
         //}
-        public DbSet<Vector2D> Features { get; set; }
+        public DbSet<Vector2D> Vector2Ds { get; set; }
+        public DbSet<Project> Projects { get; set; }
+        public DbSet<ProjectIteamMapper> ProjectIteamMappers { get; set; }
     }
 }

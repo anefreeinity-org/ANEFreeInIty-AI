@@ -12,4 +12,6 @@ export class Vector2D {
     isCartesian : boolean | null | undefined = true;
 
     description : string | null | undefined = "";
+
+    name : string | null | undefined = "";
 }

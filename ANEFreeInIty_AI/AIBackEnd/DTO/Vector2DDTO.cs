@@ -19,5 +19,7 @@ namespace AIBackEnd.DTO
         virtual public bool IsCartesian { get; set; }
 
         public string Description { get; set; }
+
+        public string Name { get; set; }
     }
 }

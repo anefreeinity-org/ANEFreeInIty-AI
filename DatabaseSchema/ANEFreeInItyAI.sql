@@ -8,9 +8,29 @@ CREATE TABLE vector2d (
     y_quadinate_val DECIMAL(10,5) NOT NULL,
     magnitude DECIMAL(10,5) NOT NULL,
     angle_with_x_axis_deg DECIMAL(10,5) NOT NULL,
+    v_name VARCHAR(30) NOT NULL,
     v_description MEDIUMTEXT NOT NULL,
     is_cartesian INT NOT NULL
 );
 
-INSERT INTO vector2d VALUES (1, 3, 4.0, 5.0, 53.0, "demo vector", 1);
-INSERT INTO vector2d VALUES (2, 4.0, 3.0, 5.0, 36.0, "demo vector", 1);
+CREATE TABLE project (
+	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    p_name VARCHAR(30) NOT NULL,
+    p_description MEDIUMTEXT NOT NULL
+);
+
+CREATE TABLE project_iteam_mapper (
+	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    project_id INT NOT NULL,
+    vector2d_id INT NOT NULL
+);
+
+INSERT INTO vector2d VALUES (1, 3, 4.0, 5.0, 53.0, "Vector A" "demo vector", 1);
+INSERT INTO vector2d VALUES (2, 4.0, 3.0, 5.0, 36.0, "Vector B" "demo vector", 1);
+
+INSERT INTO project VALUES (1, "project 1", "demo project");
+INSERT INTO project VALUES (2, "project 2", "demo project");
+
+INSERT INTO project_iteam_mapper VALUES (1, 1, 8);
+INSERT INTO project_iteam_mapper VALUES (2, 1, 9);
+INSERT INTO project_iteam_mapper VALUES (3, 2, 4);

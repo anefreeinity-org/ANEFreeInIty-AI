@@ -12,6 +12,12 @@ namespace AIBackEnd.Data
         {
             CreateMap<Vector2D, Vector2DDTO>();
             CreateMap<Vector2DDTO, Vector2D>();
+
+            CreateMap<Project, ProjectDTO>();
+            CreateMap<ProjectDTO, Project>();
+            //.ForMember(dest =>
+            //dest.Id,
+            //opt => opt.MapFrom(src => src.ProjectMapper.Id));
         }
     }
 }
