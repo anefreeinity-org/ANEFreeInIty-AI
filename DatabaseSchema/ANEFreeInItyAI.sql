@@ -36,3 +36,4 @@ INSERT INTO project VALUES (2, "project 2", "demo project");
 INSERT INTO project_iteam_mapper VALUES (1, 1, 10, "Vector E", 0);
 INSERT INTO project_iteam_mapper VALUES (2, 1, 11, "Vector F", 0);
 INSERT INTO project_iteam_mapper VALUES (3, 2, 12, "Vector G", 0);
+/* */
