@@ -1,0 +1,1 @@
+export const frames: string[] = ["Cartesian Frame", "Polar Frame"];

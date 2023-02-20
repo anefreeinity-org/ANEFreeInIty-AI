@@ -1,0 +1,1 @@
+export const iteams: string[] = ["Vector2D", "Vector3D", "Matrix"];
