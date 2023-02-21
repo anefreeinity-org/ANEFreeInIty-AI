@@ -13,10 +13,10 @@ import { Router } from '@angular/router';
 import { frames } from '../Model/referenceFrame';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ProjectService } from '../project.service';
-//import { CRUDVector2D } from '../Vector2D/CRUDRequests';
 import { CRUDRequest2Service } from '../Vector2D/crudrequest2.service';
 import { CRUDVector2D } from '../Vector2D/CRUDRequests';
 import { FunctionsService } from '../CanvasFunctions/functions.service';
+import { IteamService } from '../Iteam/iteam.service';
 
 @Component({
   selector: 'app-home-page',
@@ -57,6 +57,7 @@ export class HomePageComponent implements OnInit{
   iteamSelectedMenue: string = "Vector2D";
   iteamContain: IteamContainer[] = [];
   ishoveringOnIteam: boolean = false;
+  iteamHtml: IteamService;
 
   referenceFrameList: string[] = frames;
   selectedFrame: string = this.referenceFrameList[0];
@@ -81,8 +82,11 @@ export class HomePageComponent implements OnInit{
     private formBuilder: FormBuilder,
     private project: ProjectService,
     private vector2DFunctions: CRUDRequest2Service,
-    private canvasFunctions: FunctionsService
-    ) {this.vector2DCRUDService = this.vector2DFunctions; }
+    private canvasFunctions: FunctionsService,
+    private iteamService: IteamService
+    ) {this.vector2DCRUDService = this.vector2DFunctions;
+      this.iteamHtml = iteamService;
+     }
 
   ngOnInit(): void {
     this.myCanvas = document.getElementById("canvas");
@@ -209,20 +213,24 @@ export class HomePageComponent implements OnInit{
 //     this.context.stroke();
 // }
 
-displayIteamValues(): void {
-  switch(this.iteamSelectedMenue){
-    case "Vector2D" : //this.vector2DMethod();
-    this.vector2DFunctions.vector2DListToHTMLElementContainer(this.Vector2DList, this.iteamContain);
-                      break;
+// displayIteamValues(): void {
+//   switch(this.iteamSelectedMenue){
+//     case "Vector2D" : //this.vector2DMethod();
+//     this.vector2DFunctions.vector2DListToHTMLElementContainer(this.Vector2DList, this.iteamContain);
+//                       break;
     
-    case "Vector3D" : window.alert("Vector3D is under development");
-                      break;
+//     case "Vector3D" : window.alert("Vector3D is under development");
+//                       break;
 
-    case "Matrix" : window.alert("Matrix is under development");
-                      break;
+//     case "Matrix" : window.alert("Matrix is under development");
+//                       break;
 
-    default: window.alert("something went wrong");
-  }
+//     default: window.alert("something went wrong");
+//   }
+// }
+
+displayIteamValues(): void {
+  this.iteamService.displayIteamValues(this.iteamSelectedMenue, this.Vector2DList, this.iteamContain);
 }
 
 // displayAllProjects(): void {
@@ -271,24 +279,32 @@ addToProjectIteamContainer(project: Project): void {
   }
 }
 
+// selectedIteam(iteam: IteamContainer, event: any): void {
+//   event.preventDefault();
+//   const vector: Vector2D = iteam.ref;
+//   if(!iteam.isAdded){
+//     iteam.isAdded = true;
+//     this.vectorX = Number(vector.x);
+//     this.vectorY = Number(vector.y);
+//     //this.drawVector();
+//     this.canvasFunctions.drawVector(this.context, this.xQuandinateTolarance, this.yQuandinateTolarance, this.vectorX, this.vectorY, this.startingQuadinateX, this.startingQuadinateY);
+//   } else {
+//     iteam.isAdded = false;
+//     this.canvasFunctions.clearCanvas(this.context, this.canvasWidth, this.canvasHeight);
+//     //this.clearCanvas();
+//     //this.drawAxis();
+//     this.tolarance = this.canvasFunctions.drawAxis(this.context, this.span, this.canvasHeight, this.canvasWidth, this.xQuandinateTolarance, this.yQuandinateTolarance);
+//     this.xQuandinateTolarance = this.tolarance.x;
+//     this.yQuandinateTolarance = this.tolarance.y;
+//     //this.drawVector2D();
+//     this.drawListOf2DPoints(this.vector2DFunctions.getListOf2DPointsForVector2D(this.iteamContain));
+//   }
+// }
+
 selectedIteam(iteam: IteamContainer, event: any): void {
   event.preventDefault();
-  const vector: Vector2D = iteam.ref;
-  if(!iteam.isAdded){
-    iteam.isAdded = true;
-    this.vectorX = Number(vector.x);
-    this.vectorY = Number(vector.y);
-    //this.drawVector();
-    this.canvasFunctions.drawVector(this.context, this.xQuandinateTolarance, this.yQuandinateTolarance, this.vectorX, this.vectorY, this.startingQuadinateX, this.startingQuadinateY);
-  } else {
-    iteam.isAdded = false;
-    this.canvasFunctions.clearCanvas(this.context, this.canvasWidth, this.canvasHeight);
-    //this.clearCanvas();
-    //this.drawAxis();
-    this.tolarance = this.canvasFunctions.drawAxis(this.context, this.span, this.canvasHeight, this.canvasWidth, this.xQuandinateTolarance, this.yQuandinateTolarance);
-    this.xQuandinateTolarance = this.tolarance.x;
-    this.yQuandinateTolarance = this.tolarance.y;
-    //this.drawVector2D();
+  this.tolarance = this.iteamService.selectedIteam(iteam, this.vectorX, this.vectorY, this.context, this.xQuandinateTolarance, this.yQuandinateTolarance, this.startingQuadinateX, this.startingQuadinateY, this.canvasWidth, this.canvasHeight, this.span);
+  if(!this.tolarance.isTrue){
     this.drawListOf2DPoints(this.vector2DFunctions.getListOf2DPointsForVector2D(this.iteamContain));
   }
 }
@@ -366,10 +382,10 @@ onSubmit(): void {
 //   );
 // }
 
-hoverOnIteam(onHovering: boolean, iteam: IteamContainer): void {
-  iteam.isHovering = onHovering;
-  //window.alert(this.ishoveringOnIteam);
-}
+// hoverOnIteam(onHovering: boolean, iteam: IteamContainer): void {
+//   iteam.isHovering = onHovering;
+//   //window.alert(this.ishoveringOnIteam);
+// }
 
 hoverOnProjectIteam(onHovering: boolean, iteam: IteamContainer): void {
   iteam.isHovering = onHovering;

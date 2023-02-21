@@ -14,6 +14,7 @@ import { IteamContainer } from '../Model/IteamContainer';
 export class TwoDCoord{
   x: number;
   y: number;
+  isTrue: boolean = true;
 }
 
 

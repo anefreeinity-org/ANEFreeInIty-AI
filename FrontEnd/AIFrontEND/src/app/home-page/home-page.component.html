@@ -47,9 +47,9 @@
         </select>
         <div class="project-box">
             <div class="project-menue-div">
-                <div *ngFor="let i of projectIteamContainer; let indx = index; " style="cursor: pointer;" (mouseover) = "hoverOnProjectIteam(true, i)" (mouseout) = "hoverOnProjectIteam(false, i)" [style.background-color]="i.isHovering ? 'rgba(143, 140, 140, 0.712)' : 'rgba(210, 210, 210, 0.852)'" class="iteam-menue-list">
-                    <span style="padding-left: 5px; margin-top: 30px;">{{indx+1}}</span>
-                    <span style="padding-left: 20px;">{{i.name}}</span>
+                <div *ngFor="let i of projectIteamContainer; let indx = index; " style="cursor: pointer; vertical-align: middle;" (mouseover) = "hoverOnProjectIteam(true, i)" (mouseout) = "hoverOnProjectIteam(false, i)" [style.background-color]="i.isHovering ? 'rgba(143, 140, 140, 0.712)' : 'rgba(210, 210, 210, 0.852)'" class="iteam-menue-list">
+                    <span style="padding-left: 10px; margin-top: 30px;">{{indx+1}}</span>
+                    <span style="padding-left: 25px;">{{i.name}}</span>
                     <a style="float: right; cursor: pointer; width: 16px; padding-left: 10px;" href="#">
                         <i class="fa fa-trash-o" aria-hidden="true" style="color: rgb(196, 29, 29); font-size:19px;"></i>
                     </a>
@@ -72,9 +72,9 @@
         </select>
         <div class="element-box">
             <div class="iteam-menue-div">
-                <div *ngFor="let i of iteamContain; let indx = index;" style="cursor: pointer;" class="iteam-menue-list" (mouseover) = "hoverOnIteam(true, i)" (mouseout) = "hoverOnIteam(false, i)" [style.background-color]="i.isHovering ? 'rgba(143, 140, 140, 0.712)' : 'rgba(210, 210, 210, 0.852)'">
-                    <span style="padding-left: 5px; margin-top: 30px;">{{indx+1}}</span>
-                    <span style="padding-left: 20px;">{{i.name}}</span>
+                <div *ngFor="let i of iteamContain; let indx = index;" style="cursor: pointer;" class="iteam-menue-list" (mouseover) = "iteamHtml.hoverOnIteam(true, i)" (mouseout) = "iteamHtml.hoverOnIteam(false, i)" [style.background-color]="i.isHovering ? 'rgba(143, 140, 140, 0.712)' : 'rgba(210, 210, 210, 0.852)'">
+                    <span style="padding-left: 10px; margin-top: 30px;">{{indx+1}}</span>
+                    <span style="padding-left: 25px;">{{i.name}}</span>
                     <a style="float: right; cursor: pointer; width: 16px; padding-left: 10px;" (click)="vector2DCRUDService.deleteThisVector(i)" href="#">
                         <i class="fa fa-trash-o" aria-hidden="true" style="color: rgb(196, 29, 29); font-size:19px;"></i>
                     </a>
