@@ -15,4 +15,11 @@ export class ProjectService {
     this.link = BASE_ADDRESS + "/api/Project";
     return this.http.get<Project[]>(this.link);
   }
+
+  updateProject(pID: number, project: Project): Observable<Project> {
+    const headers = new HttpHeaders().set('content-type', 'application/json'); 
+    const body=JSON.stringify(project);
+    window.alert(body);
+    return this.http.put<Project>(BASE_ADDRESS + `/api/Project/${pID}`, project,{headers});
+  }
 }

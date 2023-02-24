@@ -45,12 +45,26 @@ export class CRUDRequest2Service {
   getListOf2DPointsForVector2D(iteamContain: IteamContainer[]) : TwoDCoord[] {
     let coords: TwoDCoord[] = [];
     let iteam: TwoDCoord;
-    //window.alert(JSON.stringify(iteamContain));
     for(let v of iteamContain){
       if(v.isAdded){
         iteam = new TwoDCoord();
         iteam.x = v.ref.x;
         iteam.y = v.ref.y;
+        coords.push(iteam);
+      }
+    }
+    return coords;
+  }
+
+  getListOf2DPointsForVector2DProject(iteamContain: IteamContainer[], vectors: Vector2D[]) : TwoDCoord[] {
+    let coords: TwoDCoord[] = [];
+    let iteam: TwoDCoord;
+    for(let v of iteamContain){
+      if(v.ref.iteamStatus === 1){
+        iteam = new TwoDCoord();
+        let vector: any = vectors.find(vect => vect.id === v.ref.vector2DId);
+        iteam.x = vector.x;
+        iteam.y = vector.y;
         coords.push(iteam);
       }
     }

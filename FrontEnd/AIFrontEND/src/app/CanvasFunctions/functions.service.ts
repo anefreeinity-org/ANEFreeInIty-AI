@@ -52,6 +52,10 @@ export class FunctionsService {
   }
 
   drawVector(context: any, xQuandinateTolarance: number, yQuandinateTolarance: number, vectorX: number, vectorY: number, startingQuadinateX: number, startingQuadinateY: number): void {
+    // window.alert(xQuandinateTolarance);
+    // window.alert(yQuandinateTolarance);
+    // window.alert(vectorX);
+    // window.alert(vectorY);
     let spX = startingQuadinateX + xQuandinateTolarance;
     let spY = yQuandinateTolarance - startingQuadinateY;
     let epX = spX + vectorX;
@@ -90,9 +94,6 @@ export class FunctionsService {
     let startingCoord = new TwoDCoord();
     startingCoord.x = startingQuadinateX;
     startingCoord.y = startingQuadinateY;
-  
-    //this.getVector2D();
-    //window.alert(startingQuadinateX+", "+startingQuadinateY);
     return startingCoord;
   }
 }

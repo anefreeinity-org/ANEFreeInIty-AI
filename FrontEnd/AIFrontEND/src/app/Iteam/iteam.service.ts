@@ -1,3 +1,5 @@
+import { ProjectIteamMapper } from './../Model/ProjectIteamMapper';
+import { Project } from './../Model/Project';
 import { CRUDRequest2Service, TwoDCoord } from './../Vector2D/crudrequest2.service';
 import { Vector2D } from './../Model/Vector2D';
 import { Injectable } from '@angular/core';
@@ -32,32 +34,49 @@ export class IteamService {
     }
   }
 
-  selectedIteam(iteam: IteamContainer, vectorX: number, vectorY: number, context: any, xQuandinateTolarance: number, yQuandinateTolarance: number, startingQuadinateX: number, startingQuadinateY: number, canvasWidth: number, canvasHeight: number, span: number): TwoDCoord {
-    //event.preventDefault();
-    const vector: Vector2D = iteam.ref;
-    let retVal = new TwoDCoord();
-    if(!iteam.isAdded){
-      iteam.isAdded = true;
-      vectorX = Number(vector.x);
-      vectorY = Number(vector.y);
-      //this.drawVector();
-      this.canvasFunctions.drawVector(context, xQuandinateTolarance, yQuandinateTolarance, vectorX, vectorY, startingQuadinateX, startingQuadinateY);
-    } else {
-      iteam.isAdded = false;
-      this.canvasFunctions.clearCanvas(context, canvasWidth, canvasHeight);
-      //this.clearCanvas();
-      //this.drawAxis();
-      let tolarance = this.canvasFunctions.drawAxis(context, span, canvasHeight, canvasWidth, xQuandinateTolarance, yQuandinateTolarance);
-      xQuandinateTolarance = tolarance.x;
-      yQuandinateTolarance = tolarance.y;
-      //this.drawVector2D();
-      retVal.isTrue = false;
-      //this.drawListOf2DPoints(this.vector2DFunctions.getListOf2DPointsForVector2D(this.iteamContain));
-    }
+  selectedIteam(selectedProject: Project, projectIteamContainer: IteamContainer[], iteam: IteamContainer, vectorX: number, vectorY: number, context: any, xQuandinateTolarance: number, yQuandinateTolarance: number, startingQuadinateX: number, startingQuadinateY: number, canvasWidth: number, canvasHeight: number, span: number) {
+    let addVector: ProjectIteamMapper = new ProjectIteamMapper();
+    addVector.projectId = selectedProject.id;
+    addVector.vector2DId = iteam.ref.id;
+    addVector.vector2DName = iteam.ref.name;
+    addVector.iteamStatus = 1;
 
-    retVal.x = xQuandinateTolarance;
-    retVal.y = yQuandinateTolarance;
-    return retVal;
+    //window.alert(JSON.stringify(addVector));
+    let newProjectIteam: IteamContainer = new IteamContainer();
+    newProjectIteam.name = addVector.vector2DName;
+    newProjectIteam.isAdded = true;
+    newProjectIteam.ref = addVector;
+
+    projectIteamContainer.push(newProjectIteam);
+
+    const vector: Vector2D = iteam.ref;
+    vectorX = Number(vector.x);
+    vectorY = Number(vector.y);
+    this.canvasFunctions.drawVector(context, xQuandinateTolarance, yQuandinateTolarance, vectorX, vectorY, startingQuadinateX, startingQuadinateY);
+    //let retVal = new TwoDCoord();
+    // if(!iteam.isAdded){
+    //   iteam.isAdded = true;
+    //   vectorX = Number(vector.x);
+    //   vectorY = Number(vector.y);
+      
+    //   //this.drawVector();
+    //   this.canvasFunctions.drawVector(context, xQuandinateTolarance, yQuandinateTolarance, vectorX, vectorY, startingQuadinateX, startingQuadinateY);
+    // } else {
+    //   iteam.isAdded = false;
+    //   this.canvasFunctions.clearCanvas(context, canvasWidth, canvasHeight);
+    //   //this.clearCanvas();
+    //   //this.drawAxis();
+    //   let tolarance = this.canvasFunctions.drawAxis(context, span, canvasHeight, canvasWidth, xQuandinateTolarance, yQuandinateTolarance);
+    //   xQuandinateTolarance = tolarance.x;
+    //   yQuandinateTolarance = tolarance.y;
+    //   //this.drawVector2D();
+    //   retVal.isTrue = false;
+    //   //this.drawListOf2DPoints(this.vector2DFunctions.getListOf2DPointsForVector2D(this.iteamContain));
+    // }
+
+    // retVal.x = xQuandinateTolarance;
+    // retVal.y = yQuandinateTolarance;
+    // return retVal;
   }
 
   hoverOnIteam(onHovering: boolean, iteam: IteamContainer): void {

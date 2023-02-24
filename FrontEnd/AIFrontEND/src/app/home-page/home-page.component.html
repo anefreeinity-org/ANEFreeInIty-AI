@@ -56,7 +56,7 @@
                     <a style="float: right; cursor: pointer; width: 16px; padding-left: 10px;" href="#">
                         <i class="fa fa-pencil-square-o" aria-hidden="true" style="color: rgb(17, 108, 126); font-size:19px;"></i>
                     </a>
-                    <a style="float:right; cursor: pointer; width: 16px;"  href="#">
+                    <a style="float:right; cursor: pointer; width: 16px;" (click)="selectedProjectIteam(i, $event)"  href="#">
                         <i class="fa fa-play-circle-o" aria-hidden="true" [style.color]="i.isAdded ? 'rgb(21, 191, 66)' : 'rgb(255, 17, 17)'" style=" padding-left: 2px; padding-top: 1px; font-size:19px;"></i>
                     </a>
                 </div>
@@ -89,6 +89,8 @@
 
         </div>
 
-        
+        <div class="save-project-button-div">
+            <button class="save-project-button" (click)="saveProject.saveProject(this.projectIteamContainer, this.projectList)">Save</button>
+        </div>
     </div>
 </body>
