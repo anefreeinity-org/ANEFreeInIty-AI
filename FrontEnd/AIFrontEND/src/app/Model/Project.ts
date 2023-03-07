@@ -6,3 +6,10 @@ export class Project {
     description: string | undefined | null = "none";
     projectMapper: ProjectIteamMapper[];
 }
+
+export interface IProject {
+    id: number;
+    name: string;
+    description: string;
+    projectMapper: ProjectIteamMapper[];
+}

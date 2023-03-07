@@ -4,6 +4,8 @@ import { Project } from './../Model/Project';
 import { Injectable } from '@angular/core';
 import { IteamContainer } from '../Model/IteamContainer';
 import { ProjectService } from '../project.service';
+import { ProjectEditComponent } from '../DialougeBox/project-edit/project-edit.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +13,8 @@ import { ProjectService } from '../project.service';
 export class ProjectOperationService {
 
   constructor(
-    private projectService: ProjectService
+    private projectService: ProjectService,
+    private projectEditDialouge: MatDialog
   ) { }
 
   saveProject(projectIteamContainer: IteamContainer[], projects: Project[]) : void {
@@ -35,5 +38,23 @@ export class ProjectOperationService {
       err=>{
         window.alert("something went wrong");
       });
+  }
+
+  editProject(project: Project): void {
+    window.alert("ok");
+    //const dialogRefD = this.projectEditDialouge.open(ProjectEditComponent); 
+    const dialogRefD = this.projectEditDialouge.open(ProjectEditComponent, {
+      data : {
+        id: project.id,
+        name: project.name,
+        description: project.description,
+        projectMapper: project.projectMapper,
+      },
+    }
+    );
+
+    dialogRefD.afterClosed().subscribe(result => {
+      console.log(`Dialog result: ${result}`);
+    });
   }
 }

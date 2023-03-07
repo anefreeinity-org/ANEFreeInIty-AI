@@ -42,8 +42,8 @@
             </div>
         </form> 
         
-        <select class="project-select" style="position: sticky;" name="Items" [(ngModel)] = "selectedProjectRef" id="cars">
-            <option class="iteam-option" *ngFor="let proj of projectList" [value]="proj" (click) = "selectedProjectFunction(proj)">{{proj.name}}</option>
+        <select class="project-select" (change) = "selectedProjectFunction($event)"  style="position: sticky;" name="Items" id="cars">
+            <option class="iteam-option" *ngFor="let proj of projectList" [value]="proj.id">{{proj.name}}</option>
         </select>
         <div class="project-box">
             <div class="project-menue-div">
@@ -54,7 +54,7 @@
                         <i class="fa fa-trash-o" aria-hidden="true" style="color: rgb(196, 29, 29); font-size:19px;"></i>
                     </a>
                     <a style="float: right; cursor: pointer; width: 16px; padding-left: 10px;" href="#">
-                        <i class="fa fa-pencil-square-o" aria-hidden="true" style="color: rgb(17, 108, 126); font-size:19px;"></i>
+                        <i class="fa fa-pencil-square-o" aria-hidden="true" style="color: rgb(17, 108, 126); font-size:19px;" (click)="this.saveProject.editProject(i.ref)"></i>
                     </a>
                     <a style="float:right; cursor: pointer; width: 16px;" (click)="selectedProjectIteam(i, $event)"  href="#">
                         <i class="fa fa-play-circle-o" aria-hidden="true" [style.color]="i.isAdded ? 'rgb(21, 191, 66)' : 'rgb(255, 17, 17)'" style=" padding-left: 2px; padding-top: 1px; font-size:19px;"></i>

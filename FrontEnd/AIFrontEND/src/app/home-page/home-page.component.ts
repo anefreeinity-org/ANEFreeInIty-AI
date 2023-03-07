@@ -1,3 +1,4 @@
+import { ProjectEditComponent } from './../DialougeBox/project-edit/project-edit.component';
 import { ProjectIteamService } from './../ProjectIteam/project-iteam.service';
 import { TwoDCoord } from './../Vector2D/crudrequest2.service';
 import { Vector2DList1 } from './../Vector2D/CRUDRequests';
@@ -121,8 +122,9 @@ export class HomePageComponent implements OnInit {
     );
   }
 
-  selectedProjectFunction(proj: Project): void {
-    //window.alert(JSON.stringify(proj));
+  selectedProjectFunction(event: any): void {
+    let projId: number = event.target.value;
+    let proj: Project = this.projectList.find(x=>x.id == projId)!;
     this.selectedProject = proj;
     window.alert(JSON.stringify(proj));
     this.projectIteamContainer = [];

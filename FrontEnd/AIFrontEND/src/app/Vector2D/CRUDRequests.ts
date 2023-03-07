@@ -29,5 +29,4 @@ export class CRUDVector2D {
     //       }
     //     );
     //   }
-    ok(){window.alert("hi2");}
 }
