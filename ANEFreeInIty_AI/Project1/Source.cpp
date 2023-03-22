@@ -80,7 +80,7 @@ int main()
 	////Vector2D::IntersectLineByVectors(v1, v, 5);
 	//Vector2D::LinearCombinationVector(arr, cons, 4)->PrintVector();
 
-	Vector2D* v1 = new Vector2D(1, 2);
+	/*Vector2D* v1 = new Vector2D(1, 2);
 	v1->PrintVector();
 
 	Vector2D* v2 = new Vector2D(0, 3);
@@ -94,5 +94,16 @@ int main()
 	double c1 = std::get<0>(constants);
 	double c2 = std::get<1>(constants);
 	
-	std::cout << c1 << ", " << c2 << std::endl;
+	std::cout << c1 << ", " << c2 << std::endl;*/
+
+	Vector2D* v1 = new Vector2D(1, 2);
+	v1->PrintVector();
+
+	Vector2D* v2 = new Vector2D(4, 8);
+	v2->PrintVector();
+
+
+	int result = Vector2D::ISLinearlyDependent(v1, v2);
+
+	std::cout << result << std::endl;
 }

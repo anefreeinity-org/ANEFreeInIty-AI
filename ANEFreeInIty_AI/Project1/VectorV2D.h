@@ -30,6 +30,7 @@ public:
 	static Vector2D* LinearCombinationVector(Vector2D* vects[], double constants[], int length);
 
 	static std::tuple<double, double> GetConstantsToReachThirdVector(Vector2D* vector1, Vector2D* vector2, Vector2D* destinationVector);
+	static int ISLinearlyDependent(Vector2D* vector1, Vector2D* vector2);
 
 	Vector2D* operator + (Vector2D& vector);
 
