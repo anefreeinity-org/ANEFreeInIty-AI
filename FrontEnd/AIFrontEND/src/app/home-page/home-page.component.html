@@ -1,21 +1,30 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 
-<body>
+<body style="padding-left: 16px; padding-top: 7px;">
     <div class="canvas-div">
         <div class="canvas-body">
             <canvas (mousemove)="showCoords($event)" id="canvas" class="my-canvas" #myCanvas width="1199" height="674"></canvas>
         </div>
         
-        <div id="nameplate">
-            <h2>CANVAS</h2>
-            <p>Coordinates: X coords: {{coordinateX}}, Y coords: {{coordinateY}}</p>
+        <div>
+            <div id="nameplate" style="display: inline-block; width: 300px;">
+                <h2>CANVAS</h2>
+                <p>Coordinates: X coords: {{coordinateX}}, Y coords: {{coordinateY}}</p>
+            </div>
+    
+            <div class="add-iteams" style="display: inline-block">
+                <button mat-raised-button (click)="addIteams()">ADD Iteams</button>
+            </div>
         </div>
 
         <div class="vector-set-quad-start-div">
-            <input class="vector-set-quad-start-input" id="starting-quad-data" type="text" placeholder="Starting Coordinate(x,y)">
+            <mat-form-field >
+                <mat-label>Add Coordinate</mat-label>
+                <input class="vector-set-quad-start-input" id="starting-quad-data" type="text" matInput placeholder="Starting Coordinate(x,y)">
+            </mat-form-field>
         </div>
-        <button class="set-point-submit-button" type="submit" (click)="getStartingQuadinates()">Add</button>
+        <button mat-raised-button class="set-point-submit-button" type="submit" (click)="getStartingQuadinates()">Add Coord</button>
     </div>
     <div class="input-div">
         <select class="frame-select" style="position: sticky;" name="Items" [(ngModel)] = "selectedFrame" (ngModelChange)="frameChange()">
@@ -24,7 +33,7 @@
 
         <form [formGroup]="formDetails" (ngSubmit)="onSubmit()">
             <div class="vector-add-quad-div">
-                <!-- <label for="">Vector: </label> -->
+                
                 <input formControlName="vector2D_coord" class="vector-add-quad-input" id="vector-data" type="text" placeholder="Vector2D (x,y)">
             </div>
     
@@ -38,7 +47,7 @@
                 <textarea formControlName="vector2D_description" class="vector-add-des-input" id="vector-data" type="text" placeholder="Vector2D Description"></textarea>
             </div>
             <div class="add-submit-button-div">
-                <button [disabled]="formDetails.controls['vector2D_coord'].invalid || formDetails.controls['vector2D_name'].invalid || formDetails.controls['vector2D_description'].invalid" class="add-submit-button" type="submit">Submit</button>
+                <button mat-raised-button [disabled]="formDetails.controls['vector2D_coord'].invalid || formDetails.controls['vector2D_name'].invalid || formDetails.controls['vector2D_description'].invalid" class="add-submit-button" type="submit">Submit</button>
             </div>
         </form> 
         
@@ -47,14 +56,14 @@
         </select>
         <div class="project-box">
             <div class="project-menue-div">
-                <div *ngFor="let i of projectIteamContainer; let indx = index; " style="cursor: pointer; vertical-align: middle;" (mouseover) = "hoverOnProjectIteam(true, i)" (mouseout) = "hoverOnProjectIteam(false, i)" [style.background-color]="i.isHovering ? 'rgba(143, 140, 140, 0.712)' : 'rgba(210, 210, 210, 0.852)'" class="iteam-menue-list">
+                <div *ngFor="let i of projectIteamContainer; let indx = index; " style="cursor: pointer; vertical-align: middle;" (mouseover) = "hoverOnProjectIteam(true, i)" (mouseout) = "hoverOnProjectIteam(false, i)" [style.background-color]="i.isHovering ? 'rgba(143, 140, 140, 0.712)' : 'rgb(250, 250, 250)'" class="iteam-menue-list">
                     <span style="padding-left: 10px; margin-top: 30px;">{{indx+1}}</span>
                     <span style="padding-left: 25px;">{{i.name}}</span>
                     <a style="float: right; cursor: pointer; width: 16px; padding-left: 10px;" href="#">
                         <i class="fa fa-trash-o" aria-hidden="true" style="color: rgb(196, 29, 29); font-size:19px;"></i>
                     </a>
                     <a style="float: right; cursor: pointer; width: 16px; padding-left: 10px;" href="#">
-                        <i class="fa fa-pencil-square-o" aria-hidden="true" style="color: rgb(17, 108, 126); font-size:19px;" (click)="this.saveProject.editProject(i.ref)"></i>
+                        <i class="fa fa-pencil-square-o" aria-hidden="true" style="color: rgb(17, 108, 126); font-size:19px;" (click)="this.saveProject.editProject(i.ref, $event)"></i>
                     </a>
                     <a style="float:right; cursor: pointer; width: 16px;" (click)="selectedProjectIteam(i, $event)"  href="#">
                         <i class="fa fa-play-circle-o" aria-hidden="true" [style.color]="i.isAdded ? 'rgb(21, 191, 66)' : 'rgb(255, 17, 17)'" style=" padding-left: 2px; padding-top: 1px; font-size:19px;"></i>
@@ -72,7 +81,7 @@
         </select>
         <div class="element-box">
             <div class="iteam-menue-div">
-                <div *ngFor="let i of iteamContain; let indx = index;" style="cursor: pointer;" class="iteam-menue-list" (mouseover) = "iteamHtml.hoverOnIteam(true, i)" (mouseout) = "iteamHtml.hoverOnIteam(false, i)" [style.background-color]="i.isHovering ? 'rgba(143, 140, 140, 0.712)' : 'rgba(210, 210, 210, 0.852)'">
+                <div *ngFor="let i of iteamContain; let indx = index;" style="cursor: pointer;" class="iteam-menue-list" (mouseover) = "iteamHtml.hoverOnIteam(true, i)" (mouseout) = "iteamHtml.hoverOnIteam(false, i)" [style.background-color]="i.isHovering ? 'rgba(143, 140, 140, 0.712)' : 'rgb(250, 250, 250)'">
                     <span style="padding-left: 10px; margin-top: 30px;">{{indx+1}}</span>
                     <span style="padding-left: 25px;">{{i.name}}</span>
                     <a style="float: right; cursor: pointer; width: 16px; padding-left: 10px;" (click)="vector2DCRUDService.deleteThisVector(i)" href="#">
@@ -90,7 +99,7 @@
         </div>
 
         <div class="save-project-button-div">
-            <button class="save-project-button" (click)="saveProject.saveProject(this.projectIteamContainer, this.projectList)">Save</button>
+            <button mat-raised-button class="save-project-button" (click)="saveProject.saveProject(this.projectIteamContainer, this.projectList)">Save All</button>
         </div>
     </div>
 </body>

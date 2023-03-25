@@ -20,6 +20,8 @@ import { CRUDVector2D } from '../Vector2D/CRUDRequests';
 import { FunctionsService } from '../CanvasFunctions/functions.service';
 import { IteamService } from '../Iteam/iteam.service';
 import { ProjectOperationService } from '../ProjectOperation/project-operation.service';
+import { MatDialog } from '@angular/material/dialog';
+import { IteamOperationComponent } from '../DialougeBox/iteam-operation/iteam-operation.component';
 
 @Component({
   selector: 'app-home-page',
@@ -85,7 +87,8 @@ export class HomePageComponent implements OnInit {
     private canvasFunctions: FunctionsService,
     private iteamService: IteamService,
     private projectIteamService: ProjectIteamService,
-    private projectOperationService: ProjectOperationService
+    private projectOperationService: ProjectOperationService,
+    private iteamOperationDialouge: MatDialog
   ) {
     this.vector2DCRUDService = this.vector2DFunctions;
     this.iteamHtml = iteamService;
@@ -231,6 +234,32 @@ export class HomePageComponent implements OnInit {
       this.vectorX = p.x;
       this.vectorY = p.y;
       this.canvasFunctions.drawVector(this.context, this.xQuandinateTolarance, this.yQuandinateTolarance, this.vectorX, this.vectorY, this.startingQuadinateX, this.startingQuadinateY);
+    }
+  }
+
+  //------------------------------------------------------Operation on Iteams--------------------------------------------------------
+
+  addIteams(): void {
+    const dialougeRefId = this.iteamOperationDialouge.open(IteamOperationComponent, {
+      data: {
+        currentIteam: this.iteamSelectedMenue,
+        operation: 1,
+        currentProjectName: this.selectedProject.name
+      }
+    });
+
+    dialougeRefId.afterClosed().subscribe(data => {
+      // window.alert(data);
+      if (!data) {
+        return;
+      }
+      this.callIteams(data);
+    }); 
+  }
+
+  callIteams(data: string): void {
+    switch(this.iteamSelectedMenue) {
+      case "Vector2D" : this.vector2DFunctions.addVectors2D(data);
     }
   }
 }

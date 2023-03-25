@@ -1,3 +1,4 @@
+import { ICoordinate2D } from './../Model/Coordinates';
 import { FunctionsService } from './../CanvasFunctions/functions.service';
 import { HomePageComponent } from './../home-page/home-page.component';
 import { Inject, Injectable } from '@angular/core';
@@ -117,4 +118,20 @@ export class CRUDRequest2Service {
       }
     );
   }
+
+  addVectors2D(data: string) {
+    let coords: ICoordinate2D[] = [];
+    let vectors = data.split(';');
+
+    for(let vector of vectors) {
+      let coord: ICoordinate2D = <ICoordinate2D>{};
+      vector = vector.substring(1, vector.length-1);
+      let buffer = vector.split(',');
+      coord.x = Number(buffer[0]);
+      coord.y = Number(buffer[1]);   
+      coords.push(coord);
+    }
+    window.alert(JSON.stringify(coords));
+  }
 }
+//[2,3];[4,5];[100,200];[-98,-8]

@@ -40,21 +40,22 @@ export class ProjectOperationService {
       });
   }
 
-  editProject(project: Project): void {
-    window.alert("ok");
-    //const dialogRefD = this.projectEditDialouge.open(ProjectEditComponent); 
+  editProject(project: any, event: any): void {
+    event.preventDefault();
+    //window.alert(JSON.stringify(project));
     const dialogRefD = this.projectEditDialouge.open(ProjectEditComponent, {
       data : {
         id: project.id,
-        name: project.name,
-        description: project.description,
-        projectMapper: project.projectMapper,
+        projectId: project.projectId,
+        iteamId: project.vector2DId,
+        iteamName: project.vector2DName,
+        iteamStatus: project.iteamStatus
       },
     }
     );
 
-    dialogRefD.afterClosed().subscribe(result => {
-      console.log(`Dialog result: ${result}`);
-    });
+    // dialogRefD.afterClosed().subscribe(result => {
+    //   console.log(`Dialog result: ${result}`);
+    // });
   }
 }

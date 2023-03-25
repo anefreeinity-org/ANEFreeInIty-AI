@@ -10,13 +10,19 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import {MatDialogModule} from '@angular/material/dialog';
-import { ProjectEditComponent } from './DialougeBox/project-edit/project-edit.component'; 
+import {MatButtonModule} from '@angular/material/button'; 
+import { ProjectEditComponent } from './DialougeBox/project-edit/project-edit.component';
+import { IteamOperationComponent } from './DialougeBox/iteam-operation/iteam-operation.component';
+import {MatToolbarModule} from '@angular/material/toolbar'; 
+import {MatInputModule} from '@angular/material/input'; 
+import {MatCardModule} from '@angular/material/card'; 
 
 @NgModule({
   declarations: [
     AppComponent,
     HomePageComponent,
-    ProjectEditComponent
+    ProjectEditComponent,
+    IteamOperationComponent
   ],
   imports: [
     BrowserModule,
@@ -28,9 +34,14 @@ import { ProjectEditComponent } from './DialougeBox/project-edit/project-edit.co
       { path: '', component: HomePageComponent }
     ]),
     BrowserAnimationsModule,
-    MatDialogModule
+    MatDialogModule,
+    MatButtonModule,
+    MatToolbarModule,
+    MatInputModule,
+    MatCardModule
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [ProjectEditComponent]
 })
 export class AppModule { }

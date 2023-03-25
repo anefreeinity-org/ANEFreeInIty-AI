@@ -1,0 +1,35 @@
+.container {
+    width: 400px;
+    height: 500px;
+}
+
+.title {
+    /* width: 300px;
+    height: 40px; */
+    text-align: center;
+}
+
+.example-form {
+    min-width: 150px;
+    max-width: 500px;
+    width: 100%;
+}
+
+.example-full-width {
+    width: 100%;
+}
+
+form {
+    font-size: large;
+}
+
+.property {
+    padding-bottom: 30px;
+    font-size: medium;
+}
+
+.button-class-close {
+    display: flex;
+    justify-content:flex-start;
+    padding-top: 45%;
+}

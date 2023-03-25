@@ -96,4 +96,8 @@ export class FunctionsService {
     startingCoord.y = startingQuadinateY;
     return startingCoord;
   }
+
+  drawNewVector2D(): void {
+    
+  }
 }

@@ -1,0 +1,30 @@
+<div class="container">
+    <div class="title" mat-dialog-title>{{operationName}} {{currentIteam}}</div>
+    <div class="property">
+        <div>
+            <p style="display: inline-block; font-weight: bold; padding-right: 10px; width: 90px;">Project: </p> {{projectName}}
+        </div>
+        <div>
+            <p style="display: inline-block; font-weight: bold; padding-right: 10px; width: 90px;">Iteam: </p> {{currentIteam}}
+        </div>
+        <div>
+            <p style="display: inline-block; font-weight: bold; padding-right: 10px; width: 90px;">Operation: </p> {{operationName}}
+        </div>        
+    </div>
+
+    <form class="example-form" [formGroup]="formDetails" (ngSubmit)="onSubmit()">
+        <mat-form-field class="example-full-width">
+            <mat-label>Add {{currentIteam}}</mat-label>
+            <input formControlName="iteamData" matInput placeholder={{placeHolder}}>
+        </mat-form-field>
+
+        <div class="button-class-custom">
+            <button mat-raised-button color="primary" type="submit" [disabled]="formDetails.controls['iteamData'].invalid">Submit</button>
+        </div>
+    </form>
+    <div class="outer-close">
+        <div class="button-class-close">
+            <button mat-raised-button color="primary" type="submit" (click)="onClose()">Close</button>
+        </div>
+    </div>
+</div>
