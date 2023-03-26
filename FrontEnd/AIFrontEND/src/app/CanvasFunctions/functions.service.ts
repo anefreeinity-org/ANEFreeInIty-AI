@@ -1,103 +1,118 @@
+import { GlobalService } from './../services/global.service';
 import { Injectable } from '@angular/core';
+import { ICanvasModel } from '../Model/General';
 import { TwoDCoord } from '../Vector2D/crudrequest2.service';
+import { ICoordinate2D } from '../Model/Coordinates';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FunctionsService {
 
-  constructor() { }
+  constructor(
+    private globalService: GlobalService
+  ) { }
 
-  drawAxis(context: any, span: number, canvasHeight: number, canvasWidth: number, xQuandinateTolarance: number, yQuandinateTolarance: number): TwoDCoord {
-    context.beginPath();
-    context.strokeStyle = 'rgba(' + [40, 40, 40, 0.3] + ')';
+  drawAxis() {
+    let canvasData: ICanvasModel = <ICanvasModel>{};
+    canvasData = this.globalService.getCurrentCanvasStatus();
+    canvasData.context.beginPath();
+    canvasData.context.strokeStyle = 'rgba(' + [40, 40, 40, 0.3] + ')';
 
-    for (var x = span; x < canvasHeight; x += span) {
-      context.moveTo(0, x);
-      context.lineTo(canvasWidth, x);
-      context.stroke();
+    for (var x = canvasData.span; x < canvasData.canvasHeight; x += canvasData.span) {
+      canvasData.context.moveTo(0, x);
+      canvasData.context.lineTo(canvasData.canvasWidth, x);
+      canvasData.context.stroke();
     }
 
-    for (var x = span; x < canvasWidth; x += span) {
-      context.moveTo(x, 0);
-      context.lineTo(x, canvasWidth);
-      context.stroke();
+    for (var x = canvasData.span; x < canvasData.canvasWidth; x += canvasData.span) {
+      canvasData.context.moveTo(x, 0);
+      canvasData.context.lineTo(x, canvasData.canvasWidth);
+      canvasData.context.stroke();
     }
 
-    context.beginPath();
-    context.strokeStyle = 'rgba(' + [255, 0, 13, 1] + ')';
+    canvasData.context.beginPath();
+    canvasData.context.strokeStyle = 'rgba(' + [255, 0, 13, 1] + ')';
 
-    var horizontalLine = span * Math.floor(Math.floor(canvasHeight / span) / 2);
-    var verticalLine = span * Math.floor(Math.floor(canvasWidth / span) / 2);
+    var horizontalLine = canvasData.span * Math.floor(Math.floor(canvasData.canvasHeight / canvasData.span) / 2);
+    var verticalLine = canvasData.span * Math.floor(Math.floor(canvasData.canvasWidth / canvasData.span) / 2);
 
-    xQuandinateTolarance = verticalLine;
-    yQuandinateTolarance = horizontalLine;
+    canvasData.xQuandinateTolarance = verticalLine;
+    canvasData.yQuandinateTolarance = horizontalLine;
 
-    context.moveTo(verticalLine, 0);
-    context.lineTo(verticalLine, canvasHeight);
-    context.stroke();
+    canvasData.context.moveTo(verticalLine, 0);
+    canvasData.context.lineTo(verticalLine, canvasData.canvasHeight);
+    canvasData.context.stroke();
 
-    context.moveTo(0, horizontalLine);
-    context.lineTo(canvasWidth, horizontalLine);
-    context.stroke();
+    canvasData.context.moveTo(0, horizontalLine);
+    canvasData.context.lineTo(canvasData.canvasWidth, horizontalLine);
+    canvasData.context.stroke();
 
-    // window.alert(xQuandinateTolarance);
-    // window.alert(yQuandinateTolarance);
-
-    let tolarance = new TwoDCoord();
-    tolarance.x = xQuandinateTolarance;
-    tolarance.y = yQuandinateTolarance;
-
-    return tolarance;
+    this.globalService.setCurrentCanvasStatus(canvasData);
   }
 
-  drawVector(context: any, xQuandinateTolarance: number, yQuandinateTolarance: number, vectorX: number, vectorY: number, startingQuadinateX: number, startingQuadinateY: number): void {
-    // window.alert(xQuandinateTolarance);
-    // window.alert(yQuandinateTolarance);
-    // window.alert(vectorX);
-    // window.alert(vectorY);
-    let spX = startingQuadinateX + xQuandinateTolarance;
-    let spY = yQuandinateTolarance - startingQuadinateY;
+  drawVector(vectorX: number, vectorY: number, color: string = '#35baf2'): void {
+    let canvasData: ICanvasModel = <ICanvasModel>{};
+    canvasData = this.globalService.getCurrentCanvasStatus();
+
+    console.log(color);
+
+    let spX = canvasData.startingQuadinateX + canvasData.xQuandinateTolarance;
+    let spY = canvasData.yQuandinateTolarance - canvasData.startingQuadinateY;
     let epX = spX + vectorX;
     let epY = spY - vectorY;
 
-    context.beginPath();
-    context.strokeStyle = 'rgba(' + [0, 239, 255, 1] + ')';
-    context.moveTo(spX, spY);
-    context.lineTo(epX, epY);
-    this.drawArrow(spX, spY, epX, epY, context);
-    context.stroke();
+    canvasData.context.beginPath();
+    canvasData.context.strokeStyle = 'rgba(' + [0, 239, 255, 1] + ')';
+    canvasData.context.moveTo(spX, spY);
+    canvasData.context.lineTo(epX, epY);
+    this.drawArrow(spX, spY, epX, epY);
+    canvasData.context.strokeStyle = color;
+    canvasData.context.stroke();
   }
 
-  drawArrow(fromx: number, fromy: number, tox: number, toy: number, context: any): void {
+  drawArrow(fromx: number, fromy: number, tox: number, toy: number): void {
+    let canvasData: ICanvasModel = <ICanvasModel>{};
+    canvasData = this.globalService.getCurrentCanvasStatus();
     var headlen = 10;
     var dx = tox - fromx;
     var dy = toy - fromy;
     var angle = Math.atan2(dy, dx);
-    context.moveTo(fromx, fromy);
-    context.lineTo(tox, toy);
-    context.lineTo(tox - headlen * Math.cos(angle - Math.PI / 6), toy - headlen * Math.sin(angle - Math.PI / 6));
-    context.moveTo(tox, toy);
-    context.lineTo(tox - headlen * Math.cos(angle + Math.PI / 6), toy - headlen * Math.sin(angle + Math.PI / 6));
+    canvasData.context.moveTo(fromx, fromy);
+    canvasData.context.lineTo(tox, toy);
+    canvasData.context.lineTo(tox - headlen * Math.cos(angle - Math.PI / 6), toy - headlen * Math.sin(angle - Math.PI / 6));
+    canvasData.context.moveTo(tox, toy);
+    canvasData.context.lineTo(tox - headlen * Math.cos(angle + Math.PI / 6), toy - headlen * Math.sin(angle + Math.PI / 6));
   }
 
-  clearCanvas(context: any, canvasWidth: number, canvasHeight: number): void {
-    context.clearRect(0, 0, canvasWidth, canvasHeight);
+  clearCanvas(): void {
+    let canvasData: ICanvasModel = <ICanvasModel>{};
+    canvasData = this.globalService.getCurrentCanvasStatus();
+    canvasData.context.clearRect(0, 0, canvasData.canvasWidth, canvasData.canvasHeight);
   }
 
-  getStartingQuadinates(documentA: any, startingQuadinateX: number, startingQuadinateY: number): TwoDCoord {
+  getStartingQuadinates(documentA: any) {
+    let canvasData: ICanvasModel = <ICanvasModel>{};
+    canvasData = this.globalService.getCurrentCanvasStatus();
+
     let value = (<HTMLInputElement>documentA.getElementById("starting-quad-data")).value;
     let quadinates: string[] = value.split(',');
-    startingQuadinateX = Number(quadinates[0]);
-    startingQuadinateY = Number(quadinates[1]);
-
-    let startingCoord = new TwoDCoord();
-    startingCoord.x = startingQuadinateX;
-    startingCoord.y = startingQuadinateY;
-    return startingCoord;
+    canvasData.startingQuadinateX = Number(quadinates[0]);
+    canvasData.startingQuadinateY = Number(quadinates[1]);
+    this.globalService.setCurrentCanvasStatus(canvasData);
   }
 
-  drawNewVector2D(): void {
-    
+  drawListOf2DCoordinates(points2D: ICoordinate2D[]): void {
+    let vectorX;
+    let vectorY;
+
+    this.clearCanvas();
+    this.drawAxis();
+
+    for (let p of points2D) {
+      vectorX = p.x;
+      vectorY = p.y;
+      this.drawVector(vectorX, vectorY, p.color);
+    }
   }
 }

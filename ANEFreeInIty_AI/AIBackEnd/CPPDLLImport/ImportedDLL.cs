@@ -25,5 +25,8 @@ namespace AIBackEnd.CPPDLLImport
 
         [DllImport(LOCATION, CharSet = CharSet.Ansi)]
         public static extern void aCat(string s1, string s2, StringBuilder ret);
+
+        [DllImport(LOCATION)]
+        public static extern IntPtr AddVector2D(double[] data, int length, bool isCartesian);
     }
 }

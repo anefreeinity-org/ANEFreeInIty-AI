@@ -1,3 +1,4 @@
+import { GlobalService } from './../services/global.service';
 import { ProjectEditComponent } from './../DialougeBox/project-edit/project-edit.component';
 import { ProjectIteamService } from './../ProjectIteam/project-iteam.service';
 import { TwoDCoord } from './../Vector2D/crudrequest2.service';
@@ -22,6 +23,8 @@ import { IteamService } from '../Iteam/iteam.service';
 import { ProjectOperationService } from '../ProjectOperation/project-operation.service';
 import { MatDialog } from '@angular/material/dialog';
 import { IteamOperationComponent } from '../DialougeBox/iteam-operation/iteam-operation.component';
+import { ICoordinate2D } from '../Model/Coordinates';
+import { ICanvasModel } from '../Model/General';
 
 @Component({
   selector: 'app-home-page',
@@ -30,6 +33,7 @@ import { IteamOperationComponent } from '../DialougeBox/iteam-operation/iteam-op
 })
 export class HomePageComponent implements OnInit {
 
+  canvasData: ICanvasModel = <ICanvasModel>{};
   canvasWidth = 1199;
   canvasHeight = 674;
   span = 20;
@@ -88,7 +92,8 @@ export class HomePageComponent implements OnInit {
     private iteamService: IteamService,
     private projectIteamService: ProjectIteamService,
     private projectOperationService: ProjectOperationService,
-    private iteamOperationDialouge: MatDialog
+    private iteamOperationDialouge: MatDialog,
+    private globalService: GlobalService
   ) {
     this.vector2DCRUDService = this.vector2DFunctions;
     this.iteamHtml = iteamService;
@@ -101,11 +106,18 @@ export class HomePageComponent implements OnInit {
     this.canvasHeight = this.myCanvas.clientHeight;
     this.context = this.myCanvas.getContext("2d");
 
-    this.tolarance = this.canvasFunctions.drawAxis(this.context, this.span, this.canvasHeight, this.canvasWidth, this.xQuandinateTolarance, this.yQuandinateTolarance);
-    this.xQuandinateTolarance = this.tolarance.x;
-    this.yQuandinateTolarance = this.tolarance.y;
+    this.canvasData.context = this.context;
+    this.canvasData.span = this.span; 
+    this.canvasData.canvasHeight = this.canvasHeight;
+    this.canvasData.canvasWidth = this.canvasWidth;
+    this.canvasData.xQuandinateTolarance = this.xQuandinateTolarance; 
+    this.canvasData.yQuandinateTolarance = this.yQuandinateTolarance;
+    this.canvasData.startingQuadinateX = this.startingQuadinateX;
+    this.canvasData.startingQuadinateY = this.startingQuadinateY;
+
+    this.globalService.setCurrentCanvasStatus(this.canvasData);
+    this.canvasFunctions.drawAxis();
     this.getVector2D();
-    this.getProjects();
   }
 
 
@@ -133,10 +145,8 @@ export class HomePageComponent implements OnInit {
     this.projectIteamContainer = [];
     this.addToProjectIteamContainer(this.selectedProject);
 
-    this.canvasFunctions.clearCanvas(this.context, this.canvasWidth, this.canvasHeight);
-    let tolarance = this.canvasFunctions.drawAxis(this.context, this.span, this.canvasHeight, this.canvasWidth, this.xQuandinateTolarance, this.yQuandinateTolarance);
-    this.xQuandinateTolarance = tolarance.x;
-    this.yQuandinateTolarance = tolarance.y;
+    this.canvasFunctions.clearCanvas();
+    this.canvasFunctions.drawAxis();
     this.drawListOf2DPoints(this.vector2DFunctions.getListOf2DPointsForVector2DProject(this.projectIteamContainer, this.Vector2DList));
   }
 
@@ -152,9 +162,8 @@ export class HomePageComponent implements OnInit {
     event.preventDefault();
     const vectorId: number = iteam.ref.vector2DId;
     let selectedVector = this.Vector2DList.find(vect => vect.id === vectorId);
-    //window.alert(vectorId);
-     this.tolarance = this.projectIteamService.selectedProjectIteam(selectedVector, iteam, this.vectorX, this.vectorY, this.context, this.xQuandinateTolarance, this.yQuandinateTolarance, this.startingQuadinateX, this.startingQuadinateY, this.canvasWidth, this.canvasHeight, this.span);
-    if (!this.tolarance.isTrue) {
+     let isTrue = this.projectIteamService.selectedProjectIteam(selectedVector, iteam, this.vectorX, this.vectorY);
+    if (!isTrue) {
       this.drawListOf2DPoints(this.vector2DFunctions.getListOf2DPointsForVector2DProject(this.projectIteamContainer, this.Vector2DList));
     }
   }
@@ -168,6 +177,7 @@ export class HomePageComponent implements OnInit {
         this.Vector2DList = res;
         this.drawListOf2DPoints(this.vector2DFunctions.getListOf2DPointsForVector2D(this.iteamContain));
         this.vector2DFunctions.vector2DListToHTMLElementContainer(this.Vector2DList, this.iteamContain);
+        this.getProjects();
       },
       err => {
         window.alert("error cannot get vector2D: " + err);
@@ -183,11 +193,7 @@ export class HomePageComponent implements OnInit {
 
   selectedIteam(iteam: IteamContainer, event: any): void {
     event.preventDefault();
-    //this.tolarance =
-    this.iteamService.selectedIteam(this.selectedProject, this.projectIteamContainer, iteam, this.vectorX, this.vectorY, this.context, this.xQuandinateTolarance, this.yQuandinateTolarance, this.startingQuadinateX, this.startingQuadinateY, this.canvasWidth, this.canvasHeight, this.span);
-    // if (!this.tolarance.isTrue) {
-    //   this.drawListOf2DPoints(this.vector2DFunctions.getListOf2DPointsForVector2D(this.iteamContain));
-    // }
+    this.iteamService.selectedIteam(this.selectedProject, this.projectIteamContainer, iteam, this.vectorX, this.vectorY);
   }
 
   //----------------------------------------------Basic-Set-Up-----------------------------------------------------------
@@ -208,10 +214,7 @@ export class HomePageComponent implements OnInit {
   }
 
   getStartingQuadinates(): void {
-    this.startingCoord = this.canvasFunctions.getStartingQuadinates(document, this.startingQuadinateX, this.startingQuadinateY)
-    this.startingQuadinateX = this.startingCoord.x;
-    this.startingQuadinateY = this.startingCoord.y;
-
+    this.canvasFunctions.getStartingQuadinates(document);
     this.getProjects();
   }
   
@@ -223,7 +226,7 @@ export class HomePageComponent implements OnInit {
       this.vectorPos = this.vector2DFunctions.addVector(this.selectedFrame, this.formDetails, this.vectorX, this.vectorY);
       this.vectorX = this.vectorPos.x;
       this.vectorY = this.vectorPos.y;
-      this.canvasFunctions.drawVector(this.context, this.xQuandinateTolarance, this.yQuandinateTolarance, this.vectorX, this.vectorY, this.startingQuadinateX, this.startingQuadinateY);
+      this.canvasFunctions.drawVector(this.vectorX, this.vectorY);
     }
   }
 
@@ -233,7 +236,7 @@ export class HomePageComponent implements OnInit {
     for (let p of points2D) {
       this.vectorX = p.x;
       this.vectorY = p.y;
-      this.canvasFunctions.drawVector(this.context, this.xQuandinateTolarance, this.yQuandinateTolarance, this.vectorX, this.vectorY, this.startingQuadinateX, this.startingQuadinateY);
+      this.canvasFunctions.drawVector(this.vectorX, this.vectorY);
     }
   }
 
@@ -249,7 +252,6 @@ export class HomePageComponent implements OnInit {
     });
 
     dialougeRefId.afterClosed().subscribe(data => {
-      // window.alert(data);
       if (!data) {
         return;
       }

@@ -11,6 +11,7 @@ import { Observable, delay } from 'rxjs';
 import { Vector2D } from '../Model/Vector2D';
 import { Project } from '../Model/Project';
 import { IteamContainer } from '../Model/IteamContainer';
+import { of } from 'rxjs';
 
 export class TwoDCoord{
   x: number;
@@ -27,7 +28,9 @@ export class CRUDRequest2Service {
   pushIteamMember: IteamContainer;
 
   constructor(
-    private vector2D: Vector2DService
+    private vector2D: Vector2DService,
+    private vectorService: Vector2DService,
+    private canvasFunctionService: FunctionsService
     ){}
 
   vector2DListToHTMLElementContainer(Vector2DList: Vector2D[], iteamContain: IteamContainer[]): void {
@@ -63,7 +66,7 @@ export class CRUDRequest2Service {
     for(let v of iteamContain){
       if(v.ref.iteamStatus === 1){
         iteam = new TwoDCoord();
-        let vector: any = vectors.find(vect => vect.id === v.ref.vector2DId);
+        let vector: any = vectors.find(vect => vect.id == v.ref.vector2DId);
         iteam.x = vector.x;
         iteam.y = vector.y;
         coords.push(iteam);
@@ -91,10 +94,10 @@ export class CRUDRequest2Service {
   
     this.vector2D.postVector2D(newVector).subscribe(
       res=>{
-        window.alert("vector 2d added");
+        window.alert("vector 2d is posted");
       },
       err=>{
-        window.alert("vector2d cannot be added: "+err);
+        window.alert("vector2d cannot be posted: "+err);
       }
     );
     } 
@@ -120,18 +123,38 @@ export class CRUDRequest2Service {
   }
 
   addVectors2D(data: string) {
+    let vectors: Vector2D[] = [];
+    let addedVector: ICoordinate2D = <ICoordinate2D>{};
     let coords: ICoordinate2D[] = [];
-    let vectors = data.split(';');
+    let vectorBuffer = data.split(';');
 
-    for(let vector of vectors) {
+    for(let vector of vectorBuffer) {
+      let vectorData: Vector2D = new Vector2D();
       let coord: ICoordinate2D = <ICoordinate2D>{};
       vector = vector.substring(1, vector.length-1);
       let buffer = vector.split(',');
+      vectorData.x = Number(buffer[0]);
+      vectorData.y = Number(buffer[1]);
       coord.x = Number(buffer[0]);
-      coord.y = Number(buffer[1]);   
+      coord.y = Number(buffer[1]);
+      coord.color = '#35baf2';
+      vectors.push(vectorData);
       coords.push(coord);
     }
-    window.alert(JSON.stringify(coords));
+    
+    this.vectorService.addVector2D(vectors).subscribe(
+      res => {
+        addedVector.x = res.x!;
+        addedVector.y = res.y!;
+        addedVector.color = '#fc32d1';
+        coords.push(addedVector);
+        this.canvasFunctionService.drawListOf2DCoordinates(coords);
+      },
+      err => {
+        window.alert("cannot add vector");
+      }
+    );
   }
 }
-//[2,3];[4,5];[100,200];[-98,-8]
+//[-70,-80];[80,-70];[100,200];[-98,-8]
+//[100,0];[0,100]

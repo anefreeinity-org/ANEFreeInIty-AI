@@ -2,6 +2,7 @@
 using AIBackEnd.DTO;
 using AIBackEnd.Services.Contracts;
 using Microsoft.AspNetCore.Mvc;
+using System.Numerics;
 
 namespace AIBackEnd.Controllers
 {
@@ -68,6 +69,22 @@ namespace AIBackEnd.Controllers
             var vectorById = await _serviceManager.vector2DService.GetVector2DByIdAsync(vector2DId);
             await _serviceManager.vector2DService.DeleteVector2DAsync(vectorById);
             return Ok("Sucessfully Deleted");
+        }
+
+        [HttpPost("/api/Vector2D/Add")]
+        public async Task<ActionResult<Vector2DDTO>> AddVector2D([FromBody] Vector2DDTO[] vectors)
+        {
+            if (vectors == null)
+            {
+                throw new Exception("lead object is null");
+            }
+            //if (!ModelState.IsValid)
+            //{
+            //    throw new BadRequestException("Invalid model object");
+            //}
+
+            var Createvector = await _serviceManager.vector2DService.AddVectors(vectors);
+            return Createvector;
         }
     }
 }

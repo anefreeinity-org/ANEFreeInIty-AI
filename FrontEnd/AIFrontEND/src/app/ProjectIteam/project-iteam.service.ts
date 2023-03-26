@@ -1,3 +1,5 @@
+import { ICanvasModel } from './../Model/General';
+import { GlobalService } from './../services/global.service';
 import { Vector2D } from './../Model/Vector2D';
 import { IteamContainer } from './../Model/IteamContainer';
 import { Injectable } from '@angular/core';
@@ -12,7 +14,8 @@ export class ProjectIteamService {
 
   constructor(
     private vector2DFunctions: CRUDRequest2Service,
-    private canvasFunctions: FunctionsService
+    private canvasFunctions: FunctionsService,
+    private globalService: GlobalService
   ) { }
 
   addToProjectIteamContainer(project: Project, projectIteamContainer: IteamContainer[]): void {
@@ -29,31 +32,22 @@ export class ProjectIteamService {
     }
   }
 
-  selectedProjectIteam(vector: any, projectIteam: IteamContainer, vectorX: number, vectorY: number, context: any, xQuandinateTolarance: number, yQuandinateTolarance: number, startingQuadinateX: number, startingQuadinateY: number, canvasWidth: number, canvasHeight: number, span: number): TwoDCoord {
-    //const vectorId: number = projectIteam.ref.vector2DId;
-    //const vector: Vector2D = projectIteam.ref;
-    let retVal = new TwoDCoord();
-    //window.alert(projectIteam.ref.iteamStatus);
+  selectedProjectIteam(vector: any, projectIteam: IteamContainer, vectorX: number, vectorY: number): boolean {
+    let isTrue: boolean = true;
     if(projectIteam.ref.iteamStatus === 0){
       projectIteam.isAdded = true;
       projectIteam.ref.iteamStatus = 1;
       vectorX = Number(vector.x);
       vectorY = Number(vector.y);
-      //window.alert("o");
-      this.canvasFunctions.drawVector(context, xQuandinateTolarance, yQuandinateTolarance, vectorX, vectorY, startingQuadinateX, startingQuadinateY);
-      //window.alert("k");
+      this.canvasFunctions.drawVector(vectorX, vectorY);
     } else {
       projectIteam.isAdded = false;
       projectIteam.ref.iteamStatus = 0;
-      this.canvasFunctions.clearCanvas(context, canvasWidth, canvasHeight);
-      let tolarance = this.canvasFunctions.drawAxis(context, span, canvasHeight, canvasWidth, xQuandinateTolarance, yQuandinateTolarance);
-      xQuandinateTolarance = tolarance.x;
-      yQuandinateTolarance = tolarance.y;
-      retVal.isTrue = false;
+      this.canvasFunctions.clearCanvas();
+      this.canvasFunctions.drawAxis();
+      isTrue = false;
     }
-
-    retVal.x = xQuandinateTolarance;
-    retVal.y = yQuandinateTolarance;
-    return retVal;
+    
+    return isTrue;
   }
 }

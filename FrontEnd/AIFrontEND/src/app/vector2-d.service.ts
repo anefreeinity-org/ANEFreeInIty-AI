@@ -39,4 +39,12 @@ export class Vector2DService {
     //window.alert(this.link);
     return this.http.delete<Vector2D>(this.link);
   }
+
+  addVector2D(vectors: Vector2D[]): Observable<Vector2D> {
+    const headers = new HttpHeaders().set('content-type', 'application/json'); 
+    const body=JSON.stringify(vectors);
+    //console.log(body);
+    //window.alert(body);
+    return this.http.post<Vector2D>(BASE_ADDRESS + '/api/Vector2D/Add', vectors,{headers});
+  }
 }

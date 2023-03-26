@@ -14,3 +14,5 @@ extern "C" _declspec(dllexport) double Vector2DGetMagnitude(Vector2D * vector);
 extern "C" _declspec(dllexport) double Vector2DGetAngleWithXAxisDeg(Vector2D * vector);
 
 extern "C" _declspec(dllexport) void aCat(const char* val1, const char* val2, char* res);
+
+extern "C" _declspec(dllexport) void* AddVector2D(double vectors[], int length, bool isCartesian);

@@ -41,3 +41,18 @@ void aCat(const char* val1, const char* val2, char* res)
 
 	strcpy(res, str.c_str());
 }
+
+void* AddVector2D(double vectors[], int length, bool isCartesian)
+{
+	Vector2D* vect1 = new Vector2D(vectors[0], vectors[1]);
+	Vector2D* vect2 = new Vector2D(vectors[2], vectors[3]);
+	Vector2D* vectRes = *vect1 + *vect2;
+	
+	for (int i = 4; i < length - 1; i += 2)
+	{
+		Vector2D* vect = new Vector2D(vectors[i], vectors[i+1]);
+		vectRes = *vectRes + *vect;
+	}
+
+	return (void*)vectRes;
+}

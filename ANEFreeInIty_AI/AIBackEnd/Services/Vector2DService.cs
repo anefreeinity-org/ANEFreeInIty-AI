@@ -7,7 +7,9 @@ using AIBackEnd.Services.Contracts;
 using AutoMapper;
 using AutoMapper.Features;
 using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
+using System.Reflection.Metadata.Ecma335;
 using System.Text;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace AIBackEnd.Services
 {
@@ -109,6 +111,43 @@ namespace AIBackEnd.Services
 
             await _anefreeinityAIRepositoryManager.Save();
             _loggerManager.LogInfo($"committed all vector2ds.");
+        }
+
+        public async Task<Vector2DDTO> AddVectors(Vector2DDTO[] vectors)
+        {
+            IntPtr vector;
+            double xQuad;
+            double yQuad;
+            double magnitude; 
+            double angleWithXAxisDeg;
+            int length = 2 * vectors.Length;
+            double[] coords = new double[length];
+            bool isCartesian = true;
+            string name = "";
+
+            for(int i = 0, j = 0; i < length - 1; i+=2, j++)
+            {
+                coords[i] = vectors[j].X;
+                coords[i+1] = vectors[j].Y;
+                name += vectors[j].Name + " ";
+            }
+
+            vector = ImportedDLL.AddVector2D(coords, length, isCartesian);
+            xQuad = ImportedDLL.Vector2DGetX(vector);
+            yQuad = ImportedDLL.Vector2DGetY(vector);
+            magnitude = ImportedDLL.Vector2DGetMagnitude(vector);
+            angleWithXAxisDeg = ImportedDLL.Vector2DGetAngleWithXAxisDeg(vector);
+
+            return new Vector2DDTO()
+            { 
+                X = xQuad, 
+                Y = yQuad, 
+                Magnitude = magnitude, 
+                AngleWithXAxisDeg = angleWithXAxisDeg, 
+                Name = name + "ADD", 
+                Description = "added vector",
+                IsCartesian = isCartesian,
+            };
         }
     }
 }

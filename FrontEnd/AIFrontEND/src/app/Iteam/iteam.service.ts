@@ -34,14 +34,13 @@ export class IteamService {
     }
   }
 
-  selectedIteam(selectedProject: Project, projectIteamContainer: IteamContainer[], iteam: IteamContainer, vectorX: number, vectorY: number, context: any, xQuandinateTolarance: number, yQuandinateTolarance: number, startingQuadinateX: number, startingQuadinateY: number, canvasWidth: number, canvasHeight: number, span: number) {
+  selectedIteam(selectedProject: Project, projectIteamContainer: IteamContainer[], iteam: IteamContainer, vectorX: number, vectorY: number) {
     let addVector: ProjectIteamMapper = new ProjectIteamMapper();
     addVector.projectId = selectedProject.id;
     addVector.vector2DId = iteam.ref.id;
     addVector.vector2DName = iteam.ref.name;
     addVector.iteamStatus = 1;
 
-    //window.alert(JSON.stringify(addVector));
     let newProjectIteam: IteamContainer = new IteamContainer();
     newProjectIteam.name = addVector.vector2DName;
     newProjectIteam.isAdded = true;
@@ -52,7 +51,7 @@ export class IteamService {
     const vector: Vector2D = iteam.ref;
     vectorX = Number(vector.x);
     vectorY = Number(vector.y);
-    this.canvasFunctions.drawVector(context, xQuandinateTolarance, yQuandinateTolarance, vectorX, vectorY, startingQuadinateX, startingQuadinateY);
+    this.canvasFunctions.drawVector(vectorX, vectorY);
     //let retVal = new TwoDCoord();
     // if(!iteam.isAdded){
     //   iteam.isAdded = true;
@@ -81,6 +80,5 @@ export class IteamService {
 
   hoverOnIteam(onHovering: boolean, iteam: IteamContainer): void {
     iteam.isHovering = onHovering;
-    //window.alert(this.ishoveringOnIteam);
   }
 }

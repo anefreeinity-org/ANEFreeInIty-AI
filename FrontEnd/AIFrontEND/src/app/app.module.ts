@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, Component } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
 
@@ -15,14 +15,16 @@ import { ProjectEditComponent } from './DialougeBox/project-edit/project-edit.co
 import { IteamOperationComponent } from './DialougeBox/iteam-operation/iteam-operation.component';
 import {MatToolbarModule} from '@angular/material/toolbar'; 
 import {MatInputModule} from '@angular/material/input'; 
-import {MatCardModule} from '@angular/material/card'; 
+import {MatCardModule} from '@angular/material/card';
+import { HomeComponent } from './HomePage/home/home.component'; 
 
 @NgModule({
   declarations: [
     AppComponent,
     HomePageComponent,
     ProjectEditComponent,
-    IteamOperationComponent
+    IteamOperationComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,
@@ -31,7 +33,8 @@ import {MatCardModule} from '@angular/material/card';
     FormsModule,
     ReactiveFormsModule,
     RouterModule.forRoot([
-      { path: '', component: HomePageComponent }
+      { path: 'drawboard', component: HomePageComponent },
+      {path: '', component: HomeComponent }
     ]),
     BrowserAnimationsModule,
     MatDialogModule,
