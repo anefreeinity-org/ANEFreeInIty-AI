@@ -1,6 +1,12 @@
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { validateVerticalPosition } from '@angular/cdk/overlay';
+
+export interface OperationData {
+  data: string;
+  operation: string;
+}
 
 @Component({
   selector: 'app-iteam-operation',
@@ -9,14 +15,18 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 })
 export class IteamOperationComponent implements OnInit {
 
+  options: string[] = ['ADD', 'SUB', 'S MAL'];
+
   currentIteam: string = '';
-  operation: number = -1;
-  operationName: string = '';
+  //operationName: string = 'Nothing Selected';
+  operation: string = 'Nothing Selected';
   projectName: string = '';
   placeHolder: string = '';
 
+  operationControl = new FormControl(null, Validators.required);
   formDetails = this.formBuilder.group({
-    iteamData: ['', Validators.required]
+    iteamData: ['', Validators.required],
+    operation: this.operationControl
   });
 
   constructor(
@@ -25,27 +35,36 @@ export class IteamOperationComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     this.currentIteam = data.currentIteam;
-    this.operation = data.operation;
     this.projectName = data.currentProjectName;
-    this.dialogRefD.disableClose = true; 
-   }
+    this.dialogRefD.disableClose = true;
+  }
 
-   ngOnInit(): void {
+  ngOnInit(): void {
     this.whichOperation();
-   }
+  }
 
   whichOperation(): void {
-    switch(this.operation) {
-      case 1 : this.placeHolder = "[x1,y1];[x2,y2]";
-               this.operationName = "ADD";
-               break;
+    switch (this.operation) {
+      case 'ADD': this.placeHolder = "[x1,y1];[x2,y2]";
+        break;
+      case 'SUB': this.placeHolder = "[x1,y1];[x2,y2]";
+        break;
+      case 'S MAL': this.placeHolder = "[x1,y1];sVal";
+        break;
       default: this.placeHolder = '';
-               this.operationName = '';
     }
   }
 
+  currentSelectedOperation(event: any) {
+    this.operation = event;
+    this.whichOperation();
+  }
+
   onSubmit(): void {
-    let retVal = this.formDetails.get('iteamData')?.value;
+    let retVal: OperationData = <OperationData>{};
+    retVal.data = this.formDetails.get('iteamData')?.value;
+    retVal.operation = this.formDetails.get('operation')?.value;
+    window.alert(JSON.stringify(retVal));
     this.dialogRefD.close(retVal);
   }
 

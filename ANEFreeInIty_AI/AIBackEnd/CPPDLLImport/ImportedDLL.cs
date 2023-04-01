@@ -28,5 +28,14 @@ namespace AIBackEnd.CPPDLLImport
 
         [DllImport(LOCATION)]
         public static extern IntPtr AddVector2D(double[] data, int length, bool isCartesian);
+
+        [DllImport(LOCATION)]
+        public static extern IntPtr SubVector2D(double[] data, int length, bool isCartesian);
+
+        [DllImport(LOCATION)]
+        public static extern IntPtr ScalerMultiplication (double sVal, IntPtr vector);
+
+        [DllImport(LOCATION, CharSet = CharSet.Ansi)]
+        public static extern IntPtr GetAllLinearCombinations(IntPtr vector1, IntPtr vector2, double x, double y);
     }
 }

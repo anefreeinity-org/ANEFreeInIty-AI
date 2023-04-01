@@ -6,9 +6,15 @@ using AIBackEnd.Repositories.Contracts;
 using AIBackEnd.Services.Contracts;
 using AutoMapper;
 using AutoMapper.Features;
+using Microsoft.AspNetCore.Routing.Constraints;
 using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
+using System.Numerics;
 using System.Reflection.Metadata.Ecma335;
+using System.Runtime.InteropServices;
+using System.Runtime.Intrinsics;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
+using System.Xml.Linq;
 using static System.Net.Mime.MediaTypeNames;
 
 namespace AIBackEnd.Services
@@ -148,6 +154,92 @@ namespace AIBackEnd.Services
                 Description = "added vector",
                 IsCartesian = isCartesian,
             };
+        }
+
+        public async Task<Vector2DDTO> SubVectors(Vector2DDTO[] vectors)
+        {
+            IntPtr vector;
+            double xQuad;
+            double yQuad;
+            double magnitude;
+            double angleWithXAxisDeg;
+            int length = 2 * vectors.Length;
+            double[] coords = new double[length];
+            bool isCartesian = true;
+            string name = "";
+
+            for (int i = 0, j = 0; i < length - 1; i += 2, j++)
+            {
+                coords[i] = vectors[j].X;
+                coords[i + 1] = vectors[j].Y;
+                name += vectors[j].Name + " ";
+            }
+
+            vector = ImportedDLL.SubVector2D(coords, length, isCartesian);
+            xQuad = ImportedDLL.Vector2DGetX(vector);
+            yQuad = ImportedDLL.Vector2DGetY(vector);
+            magnitude = ImportedDLL.Vector2DGetMagnitude(vector);
+            angleWithXAxisDeg = ImportedDLL.Vector2DGetAngleWithXAxisDeg(vector);
+
+            return new Vector2DDTO()
+            {
+                X = xQuad,
+                Y = yQuad,
+                Magnitude = magnitude,
+                AngleWithXAxisDeg = angleWithXAxisDeg,
+                Name = name + "SUB",
+                Description = "substructed vector",
+                IsCartesian = isCartesian,
+            };
+        }
+
+        public async Task<Vector2DDTO> ScalerMultiplication(SMalDto vector)
+        {
+            IntPtr cVector;
+            double xQuad, yQuad, magnitude, angleWithXAxisDeg;
+
+            if (vector.Vector.IsCartesian)
+            {
+                cVector = ImportedDLL.CreateVector2D(vector.Vector.X, vector.Vector.Y, true);
+            }
+            else
+            {
+                cVector = ImportedDLL.CreateVector2D(vector.Vector.Magnitude, vector.Vector.AngleWithXAxisDeg, false);
+            }
+
+            IntPtr resultVector = ImportedDLL.ScalerMultiplication(vector.SVal, cVector);
+
+            xQuad = ImportedDLL.Vector2DGetX(resultVector);
+            yQuad = ImportedDLL.Vector2DGetY(resultVector);
+            magnitude = ImportedDLL.Vector2DGetMagnitude(resultVector);
+            angleWithXAxisDeg = ImportedDLL.Vector2DGetAngleWithXAxisDeg(resultVector);
+
+            return new Vector2DDTO()
+            {
+                X = xQuad,
+                Y = yQuad,
+                Magnitude = magnitude,
+                AngleWithXAxisDeg = angleWithXAxisDeg,
+                Name = vector.Vector.Name + " Scaler Multiplication",
+                Description = "Scaler Multiplied vector",
+                IsCartesian = vector.Vector.IsCartesian,
+            };
+        }
+
+        public async Task<double[]> LinearCombination(LinearCombinationVector2DDto linearCombData)
+        {
+            IntPtr vector1, vector2;
+            IntPtr returnPack;
+
+            vector1 = ImportedDLL.CreateVector2D(linearCombData.Vectors[0].X, linearCombData.Vectors[0].Y, true);
+            vector2 = ImportedDLL.CreateVector2D(linearCombData.Vectors[1].X, linearCombData.Vectors[1].Y, true);
+           
+            returnPack = ImportedDLL.GetAllLinearCombinations(vector1, vector2, linearCombData.XRange, linearCombData.YRange);
+
+            int length = (int)(8 * linearCombData.XRange * linearCombData.YRange);
+            double[] result = new double[length];
+            Marshal.Copy(returnPack, result, 0, length);
+            return result;
         }
     }
 }

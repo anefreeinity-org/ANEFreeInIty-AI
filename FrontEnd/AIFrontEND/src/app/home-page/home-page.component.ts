@@ -22,7 +22,7 @@ import { FunctionsService } from '../CanvasFunctions/functions.service';
 import { IteamService } from '../Iteam/iteam.service';
 import { ProjectOperationService } from '../ProjectOperation/project-operation.service';
 import { MatDialog } from '@angular/material/dialog';
-import { IteamOperationComponent } from '../DialougeBox/iteam-operation/iteam-operation.component';
+import { IteamOperationComponent, OperationData } from '../DialougeBox/iteam-operation/iteam-operation.component';
 import { ICoordinate2D } from '../Model/Coordinates';
 import { ICanvasModel } from '../Model/General';
 
@@ -223,7 +223,7 @@ export class HomePageComponent implements OnInit {
 
   onSubmit(): void {
     if (this.iteamSelectedMenue === "Vector2D") {
-      this.vectorPos = this.vector2DFunctions.addVector(this.selectedFrame, this.formDetails, this.vectorX, this.vectorY);
+      this.vectorPos = this.vector2DFunctions.createVector(this.selectedFrame, this.formDetails, this.vectorX, this.vectorY);
       this.vectorX = this.vectorPos.x;
       this.vectorY = this.vectorPos.y;
       this.canvasFunctions.drawVector(this.vectorX, this.vectorY);
@@ -246,22 +246,21 @@ export class HomePageComponent implements OnInit {
     const dialougeRefId = this.iteamOperationDialouge.open(IteamOperationComponent, {
       data: {
         currentIteam: this.iteamSelectedMenue,
-        operation: 1,
         currentProjectName: this.selectedProject.name
       }
     });
 
-    dialougeRefId.afterClosed().subscribe(data => {
-      if (!data) {
+    dialougeRefId.afterClosed().subscribe(retVal => {
+      if (!retVal) {
         return;
       }
-      this.callIteams(data);
+      this.callIteams(retVal);
     }); 
   }
 
-  callIteams(data: string): void {
+  callIteams(dataPackage: OperationData): void {
     switch(this.iteamSelectedMenue) {
-      case "Vector2D" : this.vector2DFunctions.addVectors2D(data);
+      case "Vector2D" : this.vector2DFunctions.operationsOnVector2D(dataPackage);
     }
   }
 }

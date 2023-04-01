@@ -86,6 +86,54 @@ namespace AIBackEnd.Controllers
             var Createvector = await _serviceManager.vector2DService.AddVectors(vectors);
             return Createvector;
         }
+
+        [HttpPost("/api/Vector2D/Sub")]
+        public async Task<ActionResult<Vector2DDTO>> SubVector2D([FromBody] Vector2DDTO[] vectors)
+        {
+            if (vectors == null)
+            {
+                throw new Exception("lead object is null");
+            }
+            //if (!ModelState.IsValid)
+            //{
+            //    throw new BadRequestException("Invalid model object");
+            //}
+
+            var Createvector = await _serviceManager.vector2DService.SubVectors(vectors);
+            return Createvector;
+        }
+
+        [HttpPost("/api/Vector2D/sMal")]
+        public async Task<ActionResult<Vector2DDTO>> SubVector2D([FromBody] SMalDto sVector)
+        {
+            if (sVector == null)
+            {
+                throw new Exception("lead object is null");
+            }
+            //if (!ModelState.IsValid)
+            //{
+            //    throw new BadRequestException("Invalid model object");
+            //}
+
+            var Createvector = await _serviceManager.vector2DService.ScalerMultiplication(sVector);
+            return Createvector;
+        }
+
+        [HttpPost("/api/Vector2D/linearCombination")]
+        public async Task<ActionResult<double[]>> GetLinearCombinations([FromBody] LinearCombinationVector2DDto linearComboData)
+        {
+            if (linearComboData == null)
+            {
+                throw new Exception("lead object is null");
+            }
+            //if (!ModelState.IsValid)
+            //{
+            //    throw new BadRequestException("Invalid model object");
+            //}
+
+            var Createvector = await _serviceManager.vector2DService.LinearCombination(linearComboData);
+            return Createvector;
+        }
     }
 }
 //[FromQuery(Name = "vector2DId")]

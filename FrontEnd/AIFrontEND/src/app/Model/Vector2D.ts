@@ -15,3 +15,8 @@ export class Vector2D {
 
     name : string | null | undefined = "";
 }
+
+export interface sMalVector2D {
+    vector: Vector2D;
+    sVal: number;
+}

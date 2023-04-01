@@ -1,5 +1,7 @@
 #include <iostream>
 #include "VectorV2D.h"
+#include <string>
+#include <iostream>
 
 int main()
 {
@@ -96,14 +98,49 @@ int main()
 	
 	std::cout << c1 << ", " << c2 << std::endl;*/
 
-	Vector2D* v1 = new Vector2D(1, 2);
-	v1->PrintVector();
-
-	Vector2D* v2 = new Vector2D(4, 8);
-	v2->PrintVector();
+	
 
 
-	int result = Vector2D::ISLinearlyDependent(v1, v2);
+	/*int result = Vector2D::ISLinearlyDependent(v1, v2);
 
-	std::cout << result << std::endl;
+	std::cout << result << std::endl;*/
+	Vector2D* vector1 = new Vector2D(3, 4);
+	vector1->PrintVector();
+
+	Vector2D* vector2 = new Vector2D(7, 10);
+	vector2->PrintVector();
+	double x = 5;
+	double y = 5;
+
+	int length = 8 * x * y;
+	double* returnPack = new double[length];
+
+	Vector2D* vArr[] = { vector1, vector2 };
+
+	std::cout << Vector2D::ISLinearlyDependent(vector1, vector1);
+
+	if (Vector2D::ISLinearlyDependent(vector1, vector1))
+	{
+		std::cout << "ok" << std::endl;
+		int count = 0;
+		for (double i = -x; i < x; i++)
+		{
+			for (double j = -y; j < y; j++)
+			{
+				double cons[] = { i, j };
+				Vector2D* mulVector = Vector2D::LinearCombinationVector(vArr, cons, 2);
+
+				std::tuple<double, double> retVal = mulVector->GetVectorP2D();
+				//double param2 = std::get<0>(retVal);
+
+				returnPack[count++] = std::get<0>(retVal);
+				returnPack[count++] = std::get<1>(retVal);
+			}
+		}
+
+		for (int i = 0; i < length-1; i+=2)
+		{
+			std::cout << returnPack[i] << " , " << returnPack[i + 1] << std::endl;
+		}
+	}
 }

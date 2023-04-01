@@ -11,5 +11,8 @@ namespace AIBackEnd.Services.Contracts
         Task DeleteVector2DAsync(Vector2DDTO vector);
         Task UpdateVector2DAsync(int id, Vector2DDTO vector);
         Task<Vector2DDTO> AddVectors(Vector2DDTO[] vectors);
+        Task<Vector2DDTO> SubVectors(Vector2DDTO[] vectors);
+        Task<Vector2DDTO> ScalerMultiplication(SMalDto vector);
+        Task<double[]> LinearCombination(LinearCombinationVector2DDto linearCombData);
     }
 }

@@ -97,6 +97,49 @@ std::tuple<double, double> Vector2D::IntersectLineByVectors(Vector2D* vector1, V
 	return quadVector->GetVector2D();
 }
 
+int Vector2D::ISLinearlyDependent(Vector2D* vector1, Vector2D* vector2)
+{
+	double a1, b1, a2, b2;
+
+	std::tuple<double, double> vectorA = vector1->GetVector2D();
+	std::tuple<double, double> vectorB = vector2->GetVector2D();
+
+	a1 = std::get<0>(vectorA);
+	a2 = std::get<1>(vectorA);
+
+	b1 = std::get<0>(vectorB);
+	b2 = std::get<1>(vectorB);
+
+	if ((a1 == 0 && a2 == 0) || (b1 == 0 && b2 == 0))
+	{
+		return -1;
+	}
+	else if ((a1 == 0 && b1 == 0) || (a2 == 0 && b2 == 0))
+	{
+		return 1;
+	}
+	else if ((a1 == 0 && b2 == 0) || (a2 == 0 && b1 == 0))
+	{
+		return 0;
+	}
+	else
+	{
+		double c1, c2;
+
+		c1 = b1 / a1;
+		c2 = b2 / a2;
+
+		if (c1 == c2)
+		{
+			return 1;
+		}
+		else
+		{
+			return 0;
+		}
+	}
+}
+
 Vector2D* Vector2D::operator + (Vector2D& vector)
 {
 	std::tuple<double, double> vector2 = vector.GetVector2D();

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import {delay, Observable } from 'rxjs';
-import { Vector2D } from './Model/Vector2D';
+import { Vector2D, sMalVector2D } from './Model/Vector2D';
 import { BASE_ADDRESS } from './Environment/base';
 
 @Injectable({
@@ -28,23 +28,27 @@ export class Vector2DService {
   postVector2D(vector: Vector2D): Observable<Vector2D> {
     const headers = new HttpHeaders().set('content-type', 'application/json'); 
     const body=JSON.stringify(vector);
-    //console.log(body);
     window.alert(body);
     return this.http.post<Vector2D>(BASE_ADDRESS + '/api/Vector2D', vector,{headers});
   }
 
   deleteVector2D(deleteId: number): Observable<Vector2D> {
-    //window.alert(deleteId);
     this.link = BASE_ADDRESS + "/api/Vector2D/vector2DId?vector2DId=" + deleteId;
-    //window.alert(this.link);
     return this.http.delete<Vector2D>(this.link);
   }
 
   addVector2D(vectors: Vector2D[]): Observable<Vector2D> {
     const headers = new HttpHeaders().set('content-type', 'application/json'); 
-    const body=JSON.stringify(vectors);
-    //console.log(body);
-    //window.alert(body);
     return this.http.post<Vector2D>(BASE_ADDRESS + '/api/Vector2D/Add', vectors,{headers});
+  }
+
+  subVector2D(vectors: Vector2D[]): Observable<Vector2D> {
+    const headers = new HttpHeaders().set('content-type', 'application/json'); 
+    return this.http.post<Vector2D>(BASE_ADDRESS + '/api/Vector2D/Sub', vectors,{headers});
+  }
+
+  scalerMultiplicationVector2D(vectors: sMalVector2D): Observable<Vector2D> {
+    const headers = new HttpHeaders().set('content-type', 'application/json'); 
+    return this.http.post<Vector2D>(BASE_ADDRESS + '/api/Vector2D/sMal', vectors,{headers});
   }
 }

@@ -29,6 +29,8 @@ public:
 
 	static Vector2D* LinearCombinationVector(Vector2D* vects[], double constants[], int length);
 
+	static int ISLinearlyDependent(Vector2D* vector1, Vector2D* vector2);
+
 	Vector2D* operator + (Vector2D& vector);
 
 	Vector2D* operator - (Vector2D& vector);
@@ -41,8 +43,3 @@ public:
 
 	void PrintVectorP();
 };
-
-//extern "C" _declspec(dllexport) void* Vector2DScalerMultiplication(double sValue, void* vector)
-//{
-//	(void*) Vector2D::ScalerMultiplication(sValue, static_cast<Vector2D>(vector));
-//}
