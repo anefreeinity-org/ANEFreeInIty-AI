@@ -120,7 +120,7 @@ namespace AIBackEnd.Controllers
         }
 
         [HttpPost("/api/Vector2D/linearCombination")]
-        public async Task<ActionResult<double[]>> GetLinearCombinations([FromBody] LinearCombinationVector2DDto linearComboData)
+        public async Task<ActionResult<List<Coordinate2DDTO>>> GetLinearCombinations([FromBody] LinearCombinationVector2DDto linearComboData)
         {
             if (linearComboData == null)
             {

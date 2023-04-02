@@ -21,4 +21,4 @@ extern "C" _declspec(dllexport) void* SubVector2D(double vectors[], int length, 
 
 extern "C" _declspec(dllexport) void* ScalerMultiplication(double sVal, Vector2D & vector);
 
-extern "C" _declspec(dllexport) double* GetAllLinearCombinations(Vector2D * vector1, Vector2D * vector2, double x, double y);
+extern "C" _declspec(dllexport) double* GetAllLinearCombinations(Vector2D * vector1, Vector2D * vector2, double x, double y, int length, double scale);

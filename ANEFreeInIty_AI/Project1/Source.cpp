@@ -130,7 +130,7 @@ int main()
 				double cons[] = { i, j };
 				Vector2D* mulVector = Vector2D::LinearCombinationVector(vArr, cons, 2);
 
-				std::tuple<double, double> retVal = mulVector->GetVectorP2D();
+				std::tuple<double, double> retVal = mulVector->GetVector2D();
 				//double param2 = std::get<0>(retVal);
 
 				returnPack[count++] = std::get<0>(retVal);

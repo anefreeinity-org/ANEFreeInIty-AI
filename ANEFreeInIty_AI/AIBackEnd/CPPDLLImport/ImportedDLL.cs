@@ -36,6 +36,6 @@ namespace AIBackEnd.CPPDLLImport
         public static extern IntPtr ScalerMultiplication (double sVal, IntPtr vector);
 
         [DllImport(LOCATION, CharSet = CharSet.Ansi)]
-        public static extern IntPtr GetAllLinearCombinations(IntPtr vector1, IntPtr vector2, double x, double y);
+        public static extern IntPtr GetAllLinearCombinations(IntPtr vector1, IntPtr vector2, double x, double y, int length, double scale);
     }
 }

@@ -226,20 +226,33 @@ namespace AIBackEnd.Services
             };
         }
 
-        public async Task<double[]> LinearCombination(LinearCombinationVector2DDto linearCombData)
+        public async Task<List<Coordinate2DDTO>> LinearCombination(LinearCombinationVector2DDto linearCombData)
         {
+            List<Coordinate2DDTO> coordPack = new List<Coordinate2DDTO>();
             IntPtr vector1, vector2;
             IntPtr returnPack;
+            IDictionary<double, int> scaleLength = new Dictionary<double, int>();
+            scaleLength.Add(0.5, 32);
+            scaleLength.Add(0.25, 128);
+            scaleLength.Add(0.125, 512);
+            scaleLength.Add(0.0625, 2048);
+
+            int length = (int)(scaleLength[linearCombData.Scale] * linearCombData.XRange * linearCombData.YRange);
 
             vector1 = ImportedDLL.CreateVector2D(linearCombData.Vectors[0].X, linearCombData.Vectors[0].Y, true);
             vector2 = ImportedDLL.CreateVector2D(linearCombData.Vectors[1].X, linearCombData.Vectors[1].Y, true);
            
-            returnPack = ImportedDLL.GetAllLinearCombinations(vector1, vector2, linearCombData.XRange, linearCombData.YRange);
+            returnPack = ImportedDLL.GetAllLinearCombinations(vector1, vector2, linearCombData.XRange, linearCombData.YRange, length, linearCombData.Scale);
 
-            int length = (int)(8 * linearCombData.XRange * linearCombData.YRange);
             double[] result = new double[length];
             Marshal.Copy(returnPack, result, 0, length);
-            return result;
+            
+            for(int i = 0; i < length-1; i+=2)
+            {
+                coordPack.Add(new Coordinate2DDTO() { X = result[i], Y = result[i + 1] });
+            }
+
+            return coordPack;
         }
     }
 }

@@ -78,9 +78,8 @@ void* ScalerMultiplication(double sVal, Vector2D& vector)
 	return (void*) Vector2D::ScalerMultiplication(sVal, vector);
 }
 
-double* GetAllLinearCombinations(Vector2D* vector1, Vector2D* vector2, double x, double y)
+double* GetAllLinearCombinations(Vector2D* vector1, Vector2D* vector2, double x, double y, int length, double scale)
 {
-	int length = 8 * x * y;
 	double* returnPack = new double[length];
 
 	Vector2D* vArr[] = { vector1, vector2 };
@@ -88,9 +87,9 @@ double* GetAllLinearCombinations(Vector2D* vector1, Vector2D* vector2, double x,
 	if(Vector2D::ISLinearlyDependent(vector1, vector1)) 
 	{
 		int count = 0;
-		for (double i = -x; i < x; i++)
+		for (double i = -x; i < x; i+= scale)
 		{
-			for (double j = -y; j < y; j++)
+			for (double j = -y; j < y; j+= scale)
 			{
 				double cons[] = { i, j };
 				Vector2D* mulVector = Vector2D::LinearCombinationVector(vArr, cons, 2);

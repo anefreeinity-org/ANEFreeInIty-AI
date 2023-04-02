@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import {delay, Observable } from 'rxjs';
-import { Vector2D, sMalVector2D } from './Model/Vector2D';
+import { Vector2D, SMalVector2D, LinearCombVector2D } from './Model/Vector2D';
 import { BASE_ADDRESS } from './Environment/base';
 
 @Injectable({
@@ -47,8 +47,13 @@ export class Vector2DService {
     return this.http.post<Vector2D>(BASE_ADDRESS + '/api/Vector2D/Sub', vectors,{headers});
   }
 
-  scalerMultiplicationVector2D(vectors: sMalVector2D): Observable<Vector2D> {
+  scalerMultiplicationVector2D(vectors: SMalVector2D): Observable<Vector2D> {
     const headers = new HttpHeaders().set('content-type', 'application/json'); 
     return this.http.post<Vector2D>(BASE_ADDRESS + '/api/Vector2D/sMal', vectors,{headers});
+  }
+
+  linearCombinationVector2D(data: LinearCombVector2D): Observable<any> {
+    const headers = new HttpHeaders().set('content-type', 'application/json'); 
+    return this.http.post<LinearCombVector2D>(BASE_ADDRESS + '/api/Vector2D/linearCombination', data,{headers});
   }
 }

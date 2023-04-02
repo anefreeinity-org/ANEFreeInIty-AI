@@ -16,7 +16,14 @@ export class Vector2D {
     name : string | null | undefined = "";
 }
 
-export interface sMalVector2D {
+export interface SMalVector2D {
     vector: Vector2D;
     sVal: number;
+}
+
+export interface LinearCombVector2D {
+    vectors: Vector2D[];
+    xRange: number;
+    yRange: number;
+    scale: number | null;
 }

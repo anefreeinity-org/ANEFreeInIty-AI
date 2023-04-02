@@ -13,6 +13,6 @@ namespace AIBackEnd.Services.Contracts
         Task<Vector2DDTO> AddVectors(Vector2DDTO[] vectors);
         Task<Vector2DDTO> SubVectors(Vector2DDTO[] vectors);
         Task<Vector2DDTO> ScalerMultiplication(SMalDto vector);
-        Task<double[]> LinearCombination(LinearCombinationVector2DDto linearCombData);
+        Task<List<Coordinate2DDTO>> LinearCombination(LinearCombinationVector2DDto linearCombData);
     }
 }

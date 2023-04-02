@@ -6,6 +6,7 @@ import { validateVerticalPosition } from '@angular/cdk/overlay';
 export interface OperationData {
   data: string;
   operation: string;
+  scale: number | null;
 }
 
 @Component({
@@ -15,18 +16,22 @@ export interface OperationData {
 })
 export class IteamOperationComponent implements OnInit {
 
-  options: string[] = ['ADD', 'SUB', 'S MAL'];
+  options: string[] = ['ADD', 'SUB', 'S MAL', 'LINEAR COMBINATION'];
+  scales: number[] = [0.5, 0.25, 0.125, 0.0625];
 
   currentIteam: string = '';
   //operationName: string = 'Nothing Selected';
   operation: string = 'Nothing Selected';
   projectName: string = '';
   placeHolder: string = '';
+  showScaleControl: boolean = false;
 
   operationControl = new FormControl(null, Validators.required);
+  scaleControl = new FormControl(this.scales[0]);
   formDetails = this.formBuilder.group({
     iteamData: ['', Validators.required],
-    operation: this.operationControl
+    operation: this.operationControl,
+    scale: this.scaleControl
   });
 
   constructor(
@@ -51,20 +56,34 @@ export class IteamOperationComponent implements OnInit {
         break;
       case 'S MAL': this.placeHolder = "[x1,y1];sVal";
         break;
+      case 'LINEAR COMBINATION': this.placeHolder = "[x1,y1];[x2,y2];[xR,yR]";
+        break;
       default: this.placeHolder = '';
     }
   }
 
   currentSelectedOperation(event: any) {
     this.operation = event;
+    if(event === 'LINEAR COMBINATION') {
+      this.showScaleControl = true;
+      this.formDetails.get('scale')?.addValidators(Validators.required);
+    } else {
+      this.showScaleControl = false;
+      this.formDetails.get('scale')?.removeValidators(Validators.required);
+    }
     this.whichOperation();
+  }
+
+  currentSelectedScale(event: any) {
+    //window.alert(event);
   }
 
   onSubmit(): void {
     let retVal: OperationData = <OperationData>{};
     retVal.data = this.formDetails.get('iteamData')?.value;
     retVal.operation = this.formDetails.get('operation')?.value;
-    window.alert(JSON.stringify(retVal));
+    retVal.scale = this.formDetails.get('scale')?.value;
+    //window.alert(JSON.stringify(retVal));
     this.dialogRefD.close(retVal);
   }
 
