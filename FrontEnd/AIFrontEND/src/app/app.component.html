@@ -1,5 +1,19 @@
-<body style="background-color: rgb(240, 240, 240);">
+<body style="background-color: rgb(240, 240, 240); overflow: hidden;">
   <div class="container" style="height: 913px;">
+    <mat-toolbar style="background-color: rgb(208, 208, 208);">
+      <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
+        <mat-icon>menu</mat-icon>
+      </button>
+      <span>ANE-FreeInIty</span>
+      <span class="example-spacer"></span>
+      <button mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
+        <mat-icon>favorite</mat-icon>
+      </button>
+      <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon">
+        <mat-icon>share</mat-icon>
+      </button>
+    </mat-toolbar>
+    
     <router-outlet></router-outlet>
   </div>
 </body>

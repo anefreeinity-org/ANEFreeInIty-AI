@@ -2,6 +2,8 @@
     background-color: #000000; 
     width: 1200px; 
     height: 675px;
+    /* width: 75rem;
+    width: 42.188rem; */
     box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
               0 8px 10px 1px rgba(0, 0, 0, 0.14),
               0 3px 14px 2px rgba(0, 0, 0, 0.12);
@@ -102,9 +104,9 @@
               0 3px 14px 2px rgba(0, 0, 0, 0.12);
 }
 
-.vector-set-quad-start-div {
+/* .vector-set-quad-start-div {
     padding-top: 1%;
-}
+} */
 
 .vector-set-quad-start-input {
     font-size: medium;
@@ -249,13 +251,13 @@
 }
 
 .save-project-button {
-    margin-top: 50%;
+    margin-top: 36%;
     margin-bottom: 10%;
     position: relative;
     margin-bottom: 5px;
 }
 
 .add-iteams {
-    margin-top: 50px;
+    margin-top: 20px;
     margin-left: 5opx;
 }

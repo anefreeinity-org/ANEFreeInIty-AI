@@ -18,6 +18,7 @@ import {MatInputModule} from '@angular/material/input';
 import {MatCardModule} from '@angular/material/card';
 import { HomeComponent } from './HomePage/home/home.component'; 
 import {MatSelectModule} from '@angular/material/select'; 
+import {MatIconModule} from '@angular/material/icon'; 
 
 @NgModule({
   declarations: [
@@ -43,7 +44,8 @@ import {MatSelectModule} from '@angular/material/select';
     MatToolbarModule,
     MatInputModule,
     MatCardModule,
-    MatSelectModule
+    MatSelectModule,
+    MatIconModule
   ],
   providers: [],
   bootstrap: [AppComponent],
