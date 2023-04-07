@@ -255,3 +255,14 @@ void Vector2D::PrintVectorP()
 	std::tuple<double, double> vector2dPrint = this->GetVectorP2D();
 	std::cout << "Vector is (" << std::get<0>(vector2dPrint) << ", " << std::get<1>(vector2dPrint) << ")" << std::endl;
 }
+
+Vector2D* Vector2D::DotProductVector2D(Vector2D* vector1, Vector2D* vector2)
+{
+	std::tuple<double, double> vectorA = vector1->GetVector2D();
+	std::tuple<double, double> vectorB = vector2->GetVector2D();
+
+	double param1 = std::get<0>(vectorA) * std::get<0>(vectorB);
+	double param2 = std::get<1>(vectorA) * std::get<1>(vectorB);
+
+	return new Vector2D(param1, param2);
+}

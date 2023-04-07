@@ -104,43 +104,46 @@ int main()
 	/*int result = Vector2D::ISLinearlyDependent(v1, v2);
 
 	std::cout << result << std::endl;*/
-	Vector2D* vector1 = new Vector2D(3, 4);
-	vector1->PrintVector();
+	//Vector2D* vector1 = new Vector2D(3, 4);
+	//vector1->PrintVector();
 
-	Vector2D* vector2 = new Vector2D(7, 10);
-	vector2->PrintVector();
-	double x = 5;
-	double y = 5;
+	//Vector2D* vector2 = new Vector2D(7, 10);
+	//vector2->PrintVector();
+	//double x = 5;
+	//double y = 5;
 
-	int length = 8 * x * y;
-	double* returnPack = new double[length];
+	//int length = 8 * x * y;
+	//double* returnPack = new double[length];
 
-	Vector2D* vArr[] = { vector1, vector2 };
+	//Vector2D* vArr[] = { vector1, vector2 };
 
-	std::cout << Vector2D::ISLinearlyDependent(vector1, vector1);
+	//std::cout << Vector2D::ISLinearlyDependent(vector1, vector1);
 
-	if (Vector2D::ISLinearlyDependent(vector1, vector1))
-	{
-		std::cout << "ok" << std::endl;
-		int count = 0;
-		for (double i = -x; i < x; i++)
-		{
-			for (double j = -y; j < y; j++)
-			{
-				double cons[] = { i, j };
-				Vector2D* mulVector = Vector2D::LinearCombinationVector(vArr, cons, 2);
+	//if (Vector2D::ISLinearlyDependent(vector1, vector1))
+	//{
+	//	std::cout << "ok" << std::endl;
+	//	int count = 0;
+	//	for (double i = -x; i < x; i++)
+	//	{
+	//		for (double j = -y; j < y; j++)
+	//		{
+	//			double cons[] = { i, j };
+	//			Vector2D* mulVector = Vector2D::LinearCombinationVector(vArr, cons, 2);
 
-				std::tuple<double, double> retVal = mulVector->GetVector2D();
-				//double param2 = std::get<0>(retVal);
+	//			std::tuple<double, double> retVal = mulVector->GetVector2D();
+	//			//double param2 = std::get<0>(retVal);
 
-				returnPack[count++] = std::get<0>(retVal);
-				returnPack[count++] = std::get<1>(retVal);
-			}
-		}
+	//			returnPack[count++] = std::get<0>(retVal);
+	//			returnPack[count++] = std::get<1>(retVal);
+	//		}
+	//	}
 
-		for (int i = 0; i < length-1; i+=2)
-		{
-			std::cout << returnPack[i] << " , " << returnPack[i + 1] << std::endl;
-		}
-	}
+	//	for (int i = 0; i < length-1; i+=2)
+	//	{
+	//		std::cout << returnPack[i] << " , " << returnPack[i + 1] << std::endl;
+	//	}
+	//}
+
+Vector2D* res = Vector2D::DotProductVector2D(new Vector2D(3, 5), new Vector2D(-6, 8));
+res->PrintVector();
 }

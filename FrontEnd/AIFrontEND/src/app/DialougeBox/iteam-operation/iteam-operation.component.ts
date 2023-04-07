@@ -16,7 +16,7 @@ export interface OperationData {
 })
 export class IteamOperationComponent implements OnInit {
 
-  options: string[] = ['ADD', 'SUB', 'S MAL', 'LINEAR COMBINATION'];
+  options: string[] = ['ADD', 'SUB', 'S MAL', 'LINEAR COMBINATION', 'DOT PRODUCT'];
   scales: number[] = [0.5, 0.25, 0.125, 0.0625];
 
   currentIteam: string = '';
@@ -58,13 +58,15 @@ export class IteamOperationComponent implements OnInit {
         break;
       case 'LINEAR COMBINATION': this.placeHolder = "[x1,y1];[x2,y2];[xR,yR]";
         break;
+      case 'DOT PRODUCT': this.placeHolder = "[x1,y1];[x2,y2]";
+        break;
       default: this.placeHolder = '';
     }
   }
 
   currentSelectedOperation(event: any) {
     this.operation = event;
-    if(event === 'LINEAR COMBINATION') {
+    if (event === 'LINEAR COMBINATION') {
       this.showScaleControl = true;
       this.formDetails.get('scale')?.addValidators(Validators.required);
     } else {
@@ -82,7 +84,11 @@ export class IteamOperationComponent implements OnInit {
     let retVal: OperationData = <OperationData>{};
     retVal.data = this.formDetails.get('iteamData')?.value;
     retVal.operation = this.formDetails.get('operation')?.value;
-    retVal.scale = this.formDetails.get('scale')?.value;
+    if(this.operation === 'LINEAR COMBINATION') {
+      retVal.scale = this.formDetails.get('scale')?.value;
+    } else {
+      retVal.scale = null;
+    }
     //window.alert(JSON.stringify(retVal));
     this.dialogRefD.close(retVal);
   }

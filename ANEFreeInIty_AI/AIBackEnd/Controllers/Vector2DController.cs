@@ -134,6 +134,22 @@ namespace AIBackEnd.Controllers
             var Createvector = await _serviceManager.vector2DService.LinearCombination(linearComboData);
             return Createvector;
         }
+
+        [HttpPost("/api/Vector2D/dotProduct")]
+        public async Task<ActionResult<Vector2DDTO>> DotProduct([FromBody] Vector2DDTO[] vectors)
+        {
+            if (vectors == null)
+            {
+                throw new Exception("lead object is null");
+            }
+            //if (!ModelState.IsValid)
+            //{
+            //    throw new BadRequestException("Invalid model object");
+            //}
+
+            var dotProduct = await _serviceManager.vector2DService.DotProductVector2D(vectors[0], vectors[1]);
+            return dotProduct;
+        }
     }
 }
 //[FromQuery(Name = "vector2DId")]

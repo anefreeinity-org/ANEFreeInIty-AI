@@ -37,5 +37,8 @@ namespace AIBackEnd.CPPDLLImport
 
         [DllImport(LOCATION, CharSet = CharSet.Ansi)]
         public static extern IntPtr GetAllLinearCombinations(IntPtr vector1, IntPtr vector2, double x, double y, int length, double scale);
+
+        [DllImport(LOCATION)]
+        public static extern IntPtr Vector2DDotProduct(IntPtr vector1, IntPtr vector2);
     }
 }

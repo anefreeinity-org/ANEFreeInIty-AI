@@ -254,5 +254,32 @@ namespace AIBackEnd.Services
 
             return coordPack;
         }
+
+        public async Task<Vector2DDTO> DotProductVector2D(Vector2DDTO vector1, Vector2DDTO vector2)
+        {
+            IntPtr vectorA, vectorB, resultVector;
+            double xQuad, yQuad, magnitude, angleWithXAxisDeg;
+
+            vectorA = ImportedDLL.CreateVector2D(vector1.X, vector1.Y, true);
+            vectorB = ImportedDLL.CreateVector2D(vector2.X, vector2.Y, true);
+
+            resultVector = ImportedDLL.Vector2DDotProduct(vectorA, vectorB);
+
+            xQuad = ImportedDLL.Vector2DGetX(resultVector);
+            yQuad = ImportedDLL.Vector2DGetY(resultVector);
+            magnitude = ImportedDLL.Vector2DGetMagnitude(resultVector);
+            angleWithXAxisDeg = ImportedDLL.Vector2DGetAngleWithXAxisDeg(resultVector);
+
+            return new Vector2DDTO()
+            {
+                X = xQuad,
+                Y = yQuad,
+                Magnitude = magnitude,
+                AngleWithXAxisDeg = angleWithXAxisDeg,
+                Name = "vector dot product",
+                Description = vector1.Name + " dot product " + vector2.Name,
+                IsCartesian = true,
+            };
+        }
     }
 }

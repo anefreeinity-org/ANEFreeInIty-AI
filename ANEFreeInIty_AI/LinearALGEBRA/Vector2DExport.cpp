@@ -106,3 +106,8 @@ double* GetAllLinearCombinations(Vector2D* vector1, Vector2D* vector2, double x,
 	}
 	return returnPack;
 }
+
+void* Vector2DDotProduct(Vector2D* vector1, Vector2D* vector2)
+{
+	return (void*)Vector2D::DotProductVector2D(vector1, vector2);
+}

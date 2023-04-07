@@ -140,6 +140,17 @@ int Vector2D::ISLinearlyDependent(Vector2D* vector1, Vector2D* vector2)
 	}
 }
 
+Vector2D* Vector2D::DotProductVector2D(Vector2D* vector1, Vector2D* vector2)
+{
+	std::tuple<double, double> vectorA = vector1->GetVector2D();
+	std::tuple<double, double> vectorB = vector2->GetVector2D();
+
+	double param1 = std::get<0>(vectorA) * std::get<0>(vectorB);
+	double param2 = std::get<1>(vectorA) * std::get<1>(vectorB);
+
+	return new Vector2D(param1, param2);
+}
+
 Vector2D* Vector2D::operator + (Vector2D& vector)
 {
 	std::tuple<double, double> vector2 = vector.GetVector2D();

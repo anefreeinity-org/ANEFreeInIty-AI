@@ -31,6 +31,8 @@ public:
 
 	static int ISLinearlyDependent(Vector2D* vector1, Vector2D* vector2);
 
+	static Vector2D* DotProductVector2D(Vector2D* vector1, Vector2D* vector2);
+
 	Vector2D* operator + (Vector2D& vector);
 
 	Vector2D* operator - (Vector2D& vector);

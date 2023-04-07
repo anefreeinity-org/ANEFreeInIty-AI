@@ -134,6 +134,8 @@ export class CRUDRequest2Service {
         break;
       case 'LINEAR COMBINATION': this.linearCombinationVector2D(dataPackage.data, dataPackage.scale);
         break;
+      case 'DOT PRODUCT': this.dotProductVector2D(dataPackage.data);
+        break;
       default: window.alert("Invalid operation: " + dataPackage.operation);
     }
   }
@@ -240,7 +242,7 @@ export class CRUDRequest2Service {
       coord.x = Number(buffer[0]);
       coord.y = Number(buffer[1]);
       coord.color = '#35baf2';
-      if((vectorBufferLength++)>vectorBuffer.length-1) {
+      if ((vectorBufferLength++) > vectorBuffer.length - 1) {
         xRange = Number(buffer[0]);
         yRange = Number(buffer[1]);
         break;
@@ -261,7 +263,7 @@ export class CRUDRequest2Service {
       res => {
         //window.alert(res.length);
         for (let data of res) {
-          let coordPack: ICoordinate2D = <ICoordinate2D>{} 
+          let coordPack: ICoordinate2D = <ICoordinate2D>{}
           coordPack.x = data.x;
           coordPack.y = data.y;
           coordPack.color = '#fc32d1';
@@ -273,6 +275,40 @@ export class CRUDRequest2Service {
       },
       err => {
         window.alert("Linear Combination cannot be performed");
+      }
+    );
+  }
+
+  dotProductVector2D(data: string) {
+    let vectors: Vector2D[] = [];
+    let returnVector: ICoordinate2D = <ICoordinate2D>{};
+    let coords: ICoordinate2D[] = [];
+    let vectorBuffer = data.split(';');
+
+    for (let vector of vectorBuffer) {
+      let vectorData: Vector2D = new Vector2D();
+      let coord: ICoordinate2D = <ICoordinate2D>{};
+      vector = vector.substring(1, vector.length - 1);
+      let buffer = vector.split(',');
+      vectorData.x = Number(buffer[0]);
+      vectorData.y = Number(buffer[1]);
+      coord.x = Number(buffer[0]);
+      coord.y = Number(buffer[1]);
+      coord.color = '#35baf2';
+      vectors.push(vectorData);
+      coords.push(coord);
+    }
+
+    this.vectorService.dotProductVector2D(vectors).subscribe(
+      res => {
+        returnVector.x = res.x!;
+        returnVector.y = res.y!;
+        returnVector.color = '#fc32d1';
+        coords.push(returnVector);
+        this.canvasFunctionService.drawListOf2DCoordinates(coords);
+      },
+      err => {
+        window.alert(`dot product cannot be performed`);
       }
     );
   }

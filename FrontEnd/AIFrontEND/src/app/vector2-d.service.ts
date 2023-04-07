@@ -56,4 +56,9 @@ export class Vector2DService {
     const headers = new HttpHeaders().set('content-type', 'application/json'); 
     return this.http.post<LinearCombVector2D>(BASE_ADDRESS + '/api/Vector2D/linearCombination', data,{headers});
   }
+
+  dotProductVector2D(data: Vector2D[]): Observable<Vector2D> {
+    const headers = new HttpHeaders().set('content-type', 'application/json'); 
+    return this.http.post<Vector2D>(BASE_ADDRESS + '/api/Vector2D/dotProduct', data,{headers});
+  }
 }

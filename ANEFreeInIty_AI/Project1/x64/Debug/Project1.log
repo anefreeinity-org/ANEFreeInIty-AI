@@ -1,4 +1,5 @@
 ﻿C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(534,5): warning MSB8028: The intermediate directory (x64\Debug\) contains files shared from another project (Project1.vcxproj).  This can lead to incorrect clean and rebuild behavior.
   Source.cpp
-D:\Personal$$$$\AI\ANEFreeInIty_AI\Project1\Source.cpp(115,13): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+  VectorV2D.cpp
+  Generating Code...
   Project1.vcxproj -> D:\Personal$$$$\AI\ANEFreeInIty_AI\x64\Debug\Vector.exe
