@@ -4,7 +4,7 @@
 <body style="padding-left: 16px; padding-top: 7px;">
     <div class="canvas-div">
         <div class="canvas-body">
-            <canvas (mousemove)="showCoords($event)" id="canvas" class="my-canvas" #myCanvas width="1199" height="674"></canvas>
+            <canvas (mouseenter)="activateDynamicPan = true" (mouseout)="activateDynamicPan = false" (mousemove)="showCoords($event)" id="canvas" class="my-canvas" #myCanvas width="1199" height="674"></canvas>
         </div>
         
         <div>

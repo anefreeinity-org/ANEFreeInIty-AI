@@ -18,4 +18,8 @@ export class HomeComponent implements OnInit {
   goToMathBoard(): void {
     this.router.navigate(["/drawboard"]);
   }
+
+  goTo3DBoard(): void {
+    this.router.navigate(["/3d-board"]);
+  }
 }

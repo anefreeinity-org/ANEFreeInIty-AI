@@ -6,10 +6,10 @@ import { Vector2DList1 } from './../Vector2D/CRUDRequests';
 import { ProjectIteamMapper } from './../Model/ProjectIteamMapper';
 import { Project } from './../Model/Project';
 import { Vector2D } from './../Model/Vector2D';
-import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, Inject } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, Inject, HostListener } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { Vector2DService } from '../vector2-d.service';
-import { Observable } from 'rxjs';
+import { Observable, debounceTime, fromEvent } from 'rxjs';
 import { iteams } from '../Model/Iteams';
 import { IteamContainer } from '../Model/IteamContainer';
 import { Router } from '@angular/router';
@@ -37,6 +37,8 @@ export class HomePageComponent implements OnInit {
   canvasWidth = 1199;
   canvasHeight = 674;
   span = 20;
+  activateDynamicPan: boolean = false;
+  dynamicPanValue: number = 0;
 
   xQuandinateTolarance: number = 0;
   yQuandinateTolarance: number = 0;
@@ -100,11 +102,14 @@ export class HomePageComponent implements OnInit {
     this.saveProject = projectOperationService;
   }
 
+  @ViewChild('myCanvas') wrapperElement: ElementRef;
+
   ngOnInit(): void {
     this.myCanvas = document.getElementById("canvas");
     this.canvasWidth = this.myCanvas.clientWidth;
     this.canvasHeight = this.myCanvas.clientHeight;
     this.context = this.myCanvas.getContext("2d");
+    this.dynamicPanValue = 0;
 
     this.canvasData.context = this.context;
     this.canvasData.span = this.span; 
@@ -261,6 +266,23 @@ export class HomePageComponent implements OnInit {
   callIteams(dataPackage: OperationData): void {
     switch(this.iteamSelectedMenue) {
       case "Vector2D" : this.vector2DFunctions.operationsOnVector2D(dataPackage);
+    }
+  }
+
+  dynamicPan() {
+    //this.scroll = false;
+  }
+
+  @HostListener('mousewheel', ['$event']) onMousewheel(event: { wheelDelta: number; srcElement: { style: { setProperty: (arg0: string, arg1: string) => void; }; }; }) {
+    if(this.activateDynamicPan) {
+      // console.log(event.wheelDelta);
+      if(event.wheelDelta > 0) {
+        this.dynamicPanValue--;
+      } else {
+        this.dynamicPanValue++;
+      }
+
+      //console.log(this.dynamicPanValue);
     }
   }
 }
